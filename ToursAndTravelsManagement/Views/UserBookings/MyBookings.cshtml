@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ToursAndTravelsManagement.Models.Booking>
+
+<h2>Your Bookings</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tour Name</th>
+            <th>Booking Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@(booking.Tour != null ? booking.Tour.Name : "No Tour")</td>
+                <td>@booking.BookingDate.ToShortDateString()</td>
+                <td>@booking.Status</td>
+                <td>
+                    @if (booking.Status != ToursAndTravelsManagement.Enums.BookingStatus.Canceled)
+                    {
+                        <form asp-action="MyBookings" method="post" style="display:inline;">
+                            <input type="hidden" name="bookingId" value="@booking.BookingId" />
+                            <input type="hidden" name="action" value="Cancel" />
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Canceled</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

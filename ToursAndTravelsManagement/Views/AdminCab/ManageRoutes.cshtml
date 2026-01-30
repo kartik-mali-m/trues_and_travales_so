@@ -1,0 +1,642 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<ToursAndTravelsManagement.Models.Route>
+
+@{
+    ViewData["Title"] = "Manage Routes";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">
+                <i class="fas fa-route mr-2"></i>Manage Routes
+            </h1>
+            <p class="text-muted mb-0">Manage transportation routes between cities</p>
+        </div>
+        <a asp-action="CreateRoute" class="btn btn-primary">
+            <i class="fas fa-plus-circle mr-1"></i> Add New Route
+        </a>
+    </div>
+
+    <!-- Alerts -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle mr-2"></i> @TempData["Success"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle mr-2"></i> @TempData["Error"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- Routes Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list mr-1"></i> All Routes (@Model.Count())
+            </h6>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                        id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-filter mr-1"></i> Filter
+                </button>
+                <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                    <a class="dropdown-item" asp-action="ManageRoutes">All Routes</a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header">Sort By</h6>
+                    <a class="dropdown-item" href="?sort=distance">Distance (Low to High)</a>
+                    <a class="dropdown-item" href="?sort=distance_desc">Distance (High to Low)</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                @if (Model.Any())
+                {
+                    <table class="table table-bordered table-hover" id="routesTable" width="100%" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    <i class="fas fa-route mr-1"></i> Route
+                                </th>
+                                <th>
+                                    <i class="fas fa-map-marker-alt mr-1"></i> From City
+                                </th>
+                                <th>
+                                    <i class="fas fa-map-marker mr-1"></i> To City
+                                </th>
+                                <th>
+                                    <i class="fas fa-road mr-1"></i> Distance
+                                </th>
+                                <th>
+                                    <i class="fas fa-clock mr-1"></i> Est. Time
+                                </th>
+                                <th>
+                                    <i class="fas fa-info-circle mr-1"></i> Description
+                                </th>
+                                <th>
+                                    <i class="fas fa-cogs mr-1"></i> Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 1;
+                            }
+                            @foreach (var route in Model)
+                            {
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="mr-3">
+                                                <i class="fas fa-exchange-alt fa-2x text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <strong>Route #@route.RouteId</strong>
+                                                @if (route.CreatedDate.Year > 1)
+                                                {
+                                                    <div class="text-muted small">
+                                                        Created: @route.CreatedDate.ToString("dd MMM yyyy")
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="city-badge">
+                                            <i class="fas fa-map-pin mr-2 text-danger"></i>
+                                            <strong>@route.FromCity?.Name</strong>
+                                            @if (!string.IsNullOrEmpty(route.FromCity?.State))
+                                            {
+                                                <div class="text-muted small">@route.FromCity?.State</div>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="city-badge">
+                                            <i class="fas fa-map-pin mr-2 text-success"></i>
+                                            <strong>@route.ToCity?.Name</strong>
+                                            @if (!string.IsNullOrEmpty(route.ToCity?.State))
+                                            {
+                                                <div class="text-muted small">@route.ToCity?.State</div>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="distance-display">
+                                            <span class="badge badge-info">
+                                                <i class="fas fa-road mr-1"></i>
+                                                @route.Distance.ToString("N1") km
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="time-display">
+                                           @*  @if (route.EstimatedTime.HasValue)
+                                            {
+                                                <span class="badge badge-warning">
+                                                    <i class="fas fa-clock mr-1"></i>
+                                                    @route.EstimatedTime.Value.ToString(@"hh\:mm") hrs
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-secondary">N/A</span>
+                                            } *@
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(route.RouteDescription))
+                                        {
+                                            <div class="description-truncate" title="@route.RouteDescription">
+                                                @(route.RouteDescription.Length > 40 ? route.RouteDescription.Substring(0, 40) + "..." : route.RouteDescription)
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">No description</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="EditRoute" asp-route-id="@route.RouteId"
+                                               class="btn btn-sm btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-info"
+                                                    data-toggle="modal" data-target="#detailsModal-@route.RouteId"
+                                                    title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    data-toggle="modal" data-target="#deleteModal-@route.RouteId"
+                                                    title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Details Modal -->
+                                <div class="modal fade" id="detailsModal-@route.RouteId" tabindex="-1" role="dialog"
+                                     aria-labelledby="detailsModalLabel-@route.RouteId" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-primary text-white">
+                                                <h5 class="modal-title" id="detailsModalLabel-@route.RouteId">
+                                                    <i class="fas fa-info-circle mr-2"></i>Route Details
+                                                </h5>
+                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h6><i class="fas fa-route mr-2"></i>Route Information</h6>
+                                                        <table class="table table-sm">
+                                                            <tr>
+                                                                <th>Route ID:</th>
+                                                                <td>#@route.RouteId</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>From City:</th>
+                                                                <td>
+                                                                    <strong>@route.FromCity?.Name</strong>
+                                                                    <div class="text-muted">@route.FromCity?.State, @route.FromCity?.Country</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>To City:</th>
+                                                                <td>
+                                                                    <strong>@route.ToCity?.Name</strong>
+                                                                    <div class="text-muted">@route.ToCity?.State, @route.ToCity?.Country</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Distance:</th>
+                                                                <td><strong>@route.Distance.ToString("N1") km</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Est. Time:</th>
+                                                               @*  <td>
+                                                                    @if (route.EstimatedTime.HasValue)
+                                                                    {
+                                                                        <strong>@route.EstimatedTime.Value.ToString(@"hh\:mm") hours</strong>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="text-muted">Not specified</span>
+                                                                    }
+                                                                </td> *@
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h6><i class="fas fa-info-circle mr-2"></i>Additional Details</h6>
+                                                        <div class="mb-3">
+                                                            <strong>Description:</strong>
+                                                            <p class="mt-1">@(string.IsNullOrEmpty(route.RouteDescription) ? "No description provided" : route.RouteDescription)</p>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <strong>Popular Stops:</strong>
+                                                            <p class="mt-1">@(string.IsNullOrEmpty(route.PopularStops) ? "No popular stops listed" : route.PopularStops)</p>
+                                                        </div>
+                                                        @if (route.CreatedDate.Year > 1)
+                                                        {
+                                                            <div class="text-muted small">
+                                                                <i class="fas fa-calendar-alt mr-1"></i>
+                                                                Created: @route.CreatedDate.ToString("dd MMM yyyy HH:mm")
+                                                                @if (!string.IsNullOrEmpty(route.CreatedBy))
+                                                                {
+                                                                    <div>By: @route.CreatedBy</div>
+                                                                }
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a asp-action="EditRoute" asp-route-id="@route.RouteId" class="btn btn-primary">
+                                                    <i class="fas fa-edit mr-1"></i> Edit Route
+                                                </a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    <i class="fas fa-times mr-1"></i> Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteModal-@route.RouteId" tabindex="-1" role="dialog"
+                                     aria-labelledby="deleteModalLabel-@route.RouteId" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-danger text-white">
+                                                <h5 class="modal-title" id="deleteModalLabel-@route.RouteId">
+                                                    <i class="fas fa-exclamation-triangle mr-2"></i>Confirm Delete
+                                                </h5>
+                                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>Are you sure you want to delete this route?</p>
+                                                <div class="alert alert-warning">
+                                                    <i class="fas fa-exclamation-circle mr-2"></i>
+                                                    <strong>Warning:</strong> Deleting this route will affect all cab prices and bookings associated with it!
+                                                </div>
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <th>Route:</th>
+                                                        <td>@route.FromCity?.Name → @route.ToCity?.Name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Distance:</th>
+                                                        <td>@route.Distance.ToString("N1") km</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Created:</th>
+                                                        <td>@route.CreatedDate.ToString("dd MMM yyyy")</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    <i class="fas fa-times mr-1"></i> Cancel
+                                                </button>
+                                                <form asp-action="DeleteRoute" method="post">
+                                                    <input type="hidden" name="id" value="@route.RouteId" />
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <i class="fas fa-trash-alt mr-1"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                counter++;
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-route fa-4x text-muted"></i>
+                        </div>
+                        <h4 class="text-muted">No Routes Found</h4>
+                        <p class="text-muted mb-4">Start by adding your first transportation route between cities.</p>
+                        <a asp-action="CreateRoute" class="btn btn-primary">
+                            <i class="fas fa-plus-circle mr-1"></i> Add Your First Route
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Routes Management Styles */
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+        border: none;
+    }
+
+        .card-header h6 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .btn-group .btn {
+        border-radius: 6px;
+        margin: 0 2px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-group .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+    }
+
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, #4fd1c5 0%, #319795 100%);
+        border-color: #4fd1c5;
+    }
+
+    .btn-outline-danger:hover {
+        background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+        border-color: #fc8181;
+    }
+
+    /* Route Display */
+    .city-badge {
+        padding: 8px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+
+    .distance-display .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        background: linear-gradient(135deg, #4fd1c5 0%, #319795 100%);
+    }
+
+    .time-display .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        background: linear-gradient(135deg, #f6e05e 0%, #d69e2e 100%);
+        color: #1a202c;
+    }
+
+    .description-truncate {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: help;
+    }
+
+    /* Table Styles */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .table thead th {
+            background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+            border: none;
+            padding: 15px 12px;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+            .table tbody tr:hover {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+                transform: scale(1.002);
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            }
+
+        .table tbody td {
+            padding: 15px 12px;
+            vertical-align: middle;
+            border-top: 1px solid #f0f0f0;
+        }
+
+    /* Modal Styles */
+    .modal-content {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    .modal-header {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-body table.table-sm tr {
+        border-bottom: 1px solid #e9ecef;
+    }
+
+        .modal-body table.table-sm tr:last-child {
+            border-bottom: none;
+        }
+
+    /* Empty State */
+    .text-center.py-5 {
+        background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .btn-group {
+            flex-direction: column;
+        }
+
+            .btn-group .btn {
+                margin: 2px 0;
+                width: 100%;
+            }
+
+        .description-truncate {
+            max-width: 150px;
+        }
+
+        .modal-dialog {
+            margin: 10px;
+        }
+    }
+
+    /* Alert Styling */
+    .alert {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1rem 1.25rem;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        color: white;
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        color: white;
+    }
+
+    /* DataTable Customization */
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 20px;
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border-radius: 8px;
+        padding: 4px 8px;
+    }
+
+    /* Animation for route arrows */
+    @@keyframes routeArrow {
+        0% {
+            transform: translateX(0);
+        }
+
+        50% {
+            transform: translateX(5px);
+        }
+
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    .fa-exchange-alt {
+        animation: routeArrow 2s infinite;
+        color: #667eea;
+    }
+
+    /* Gradient text for headers */
+    .text-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Initialize DataTable
+            $('#routesTable').DataTable({
+                "pageLength": 10,
+                "order": [[1, 'asc']],
+                "language": {
+                    "emptyTable": "No routes available",
+                    "search": "Search routes:",
+                    "paginate": {
+                        "previous": "<i class='fas fa-chevron-left'></i>",
+                        "next": "<i class='fas fa-chevron-right'></i>"
+                    }
+                },
+                "columnDefs": [
+                    { "orderable": false, "targets": [0, 7] },
+                    { "searchable": false, "targets": [0, 7] }
+                ],
+                "responsive": true
+            });
+
+            // Auto-dismiss alerts
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+
+            // Confirm before delete
+            $(document).on('click', '.btn-outline-danger', function (e) {
+                var routeName = $(this).closest('tr').find('.city-badge strong').first().text() +
+                    " → " + $(this).closest('tr').find('.city-badge strong').last().text();
+
+                if (!confirm('Are you sure you want to delete route: ' + routeName + '?')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            });
+
+            // Smooth scroll to top when modal opens
+            $('.modal').on('show.bs.modal', function () {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 300);
+            });
+
+            // Highlight row on hover
+            $('#routesTable tbody tr').hover(
+                function () {
+                    $(this).addClass('hover-row');
+                },
+                function () {
+                    $(this).removeClass('hover-row');
+                }
+            );
+
+            // Add hover effect class
+            $('table').addClass('table-hover-effect');
+        });
+    </script>
+}

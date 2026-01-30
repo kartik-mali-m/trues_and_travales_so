@@ -1,0 +1,517 @@
+﻿@* @model ToursAndTravelsManagement.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="container">
+    <div class="row">
+        <!-- Pie Chart for Booking Status -->
+        <div class="col-md-6">
+            <h4>Booking Status</h4>
+            <canvas id="bookingStatusChart"></canvas>
+        </div>
+
+        <!-- Line Chart for Revenue by Month -->
+        <div class="col-md-6">
+            <h4>Revenue by Month</h4>
+            <canvas id="revenueByMonthChart"></canvas>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pie Chart for Booking Status
+        var bookingStatusData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.BookingStatusData));
+        var bookingStatusLabels = Object.keys(bookingStatusData);
+        var bookingStatusValues = Object.values(bookingStatusData);
+
+        var bookingStatusCtx = document.getElementById('bookingStatusChart').getContext('2d');
+        new Chart(bookingStatusCtx, {
+            type: 'pie',
+            data: {
+                labels: bookingStatusLabels,
+                datasets: [{
+                    label: 'Booking Status',
+                    data: bookingStatusValues,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#FF9F40']
+                }]
+            }
+        });
+
+        // Line Chart for Revenue by Month
+        var revenueByMonthData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.RevenueByMonth));
+        var revenueByMonthLabels = Object.keys(revenueByMonthData);
+        var revenueByMonthValues = Object.values(revenueByMonthData);
+
+        var revenueByMonthCtx = document.getElementById('revenueByMonthChart').getContext('2d');
+        new Chart(revenueByMonthCtx, {
+            type: 'line',
+            data: {
+                labels: revenueByMonthLabels,
+                datasets: [{
+                    label: 'Revenue by Month',
+                    data: revenueByMonthValues,
+                    borderColor: '#FF6384',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)'
+                }]
+            }
+        });
+    </script>
+}
+ *@
+
+@model ToursAndTravelsManagement.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Subtitle"] = "Welcome back! Real-time business insights";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- Dashboard Content -->
+<div class="container-fluid px-0">
+    <!-- Stats Grid -->
+    <div class="stats-grid-3d" data-aos="fade-up">
+        <div class="stat-card-3d" style="--gradient-start: #667eea; --gradient-end: #764ba2; --shadow-color: 102,126,234;">
+            <div class="stat-icon-3d">
+                <i class="ri-calendar-check-fill"></i>
+            </div>
+            @* <div class="stat-value-3d">@Model.TotalBookings.ToString("N0")</div> *@
+            <div class="stat-label-3d">Total Bookings</div>
+            <div class="stat-trend-3d positive">
+                <i class="ri-arrow-up-line"></i> 12% from last month
+            </div>
+        </div>
+
+        <div class="stat-card-3d" style="--gradient-start: #4facfe; --gradient-end: #00f2fe; --shadow-color: 79,172,254;">
+            <div class="stat-icon-3d">
+                <i class="ri-money-rupee-circle-fill"></i>
+            </div>
+           @*  <div class="stat-value-3d">₹@Model.TotalRevenue.ToString("N0")</div> *@
+            <div class="stat-label-3d">Total Revenue</div>
+            <div class="stat-trend-3d positive">
+                <i class="ri-arrow-up-line"></i> 18% from last month
+            </div>
+        </div>
+
+        <div class="stat-card-3d" style="--gradient-start: #fa709a; --gradient-end: #fee140; --shadow-color: 250,112,154;">
+            <div class="stat-icon-3d">
+                <i class="ri-user-add-fill"></i>
+            </div>
+           @*  <div class="stat-value-3d">@Model.TotalCustomers.ToString("N0")</div> *@
+            <div class="stat-label-3d">Total Customers</div>
+            <div class="stat-trend-3d positive">
+                <i class="ri-arrow-up-line"></i> 8% from last month
+            </div>
+        </div>
+
+        <div class="stat-card-3d" style="--gradient-start: #f093fb; --gradient-end: #f5576c; --shadow-color: 240,147,251;">
+            <div class="stat-icon-3d">
+                <i class="ri-roadster-fill"></i>
+            </div>
+           @*  <div class="stat-value-3d">@Model.ActiveTours.ToString("N0")</div> *@
+            <div class="stat-label-3d">Active Tours</div>
+            <div class="stat-trend-3d positive">
+                <i class="ri-arrow-up-line"></i> 5% from last month
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions-3d" data-aos="fade-up" data-aos-delay="100">
+        <a asp-controller="Bookings" asp-action="Create" class="action-card-3d">
+            <div class="action-icon-3d">
+                <i class="ri-add-circle-fill"></i>
+            </div>
+            <h5 class="mb-2" style="color: white;">New Booking</h5>
+            <p class="mb-0 small" style="color: rgba(255,255,255,0.7);">Create a new booking</p>
+        </a>
+
+        <a asp-controller="Tours" asp-action="Create" class="action-card-3d">
+            <div class="action-icon-3d">
+                <i class="ri-map-pin-add-fill"></i>
+            </div>
+            <h5 class="mb-2" style="color: white;">Add Tour</h5>
+            <p class="mb-0 small" style="color: rgba(255,255,255,0.7);">Create new tour package</p>
+        </a>
+
+        <a asp-controller="Reports" asp-action="Index" class="action-card-3d">
+            <div class="action-icon-3d">
+                <i class="ri-bar-chart-fill"></i>
+            </div>
+            <h5 class="mb-2" style="color: white;">Generate Report</h5>
+            <p class="mb-0 small" style="color: rgba(255,255,255,0.7);">View detailed reports</p>
+        </a>
+
+        <a asp-controller="Settings" asp-action="Index" class="action-card-3d">
+            <div class="action-icon-3d">
+                <i class="ri-settings-3-fill"></i>
+            </div>
+            <h5 class="mb-2" style="color: white;">Settings</h5>
+            <p class="mb-0 small" style="color: rgba(255,255,255,0.7);">Configure system</p>
+        </a>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-row-3d" data-aos="fade-up" data-aos-delay="200">
+        <div class="chart-container-3d">
+            <div class="chart-header-3d">
+                <h3 class="chart-title-3d">Booking Status Distribution</h3>
+                <button class="btn btn-sm" style="background: rgba(255,255,255,0.1); color: white; border: none;">
+                    <i class="ri-refresh-line"></i>
+                </button>
+            </div>
+            <canvas id="bookingStatusChart3d" height="250"></canvas>
+        </div>
+
+        <div class="chart-container-3d">
+            <div class="chart-header-3d">
+                <h3 class="chart-title-3d">Monthly Revenue</h3>
+                <select class="form-select form-select-sm w-auto" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">
+                    <option style="background: #0f172a;">Last 6 Months</option>
+                    <option style="background: #0f172a;">Last Year</option>
+                    <option style="background: #0f172a;">Year to Date</option>
+                </select>
+            </div>
+            <canvas id="revenueChart3d" height="250"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Bookings & Top Tours -->
+    <div class="row" data-aos="fade-up" data-aos-delay="300">
+        <div class="col-lg-8 mb-4">
+            <div class="table-container-3d h-100">
+                <div class="table-title-3d">
+                    <span>Recent Bookings</span>
+                    <a asp-controller="Bookings" asp-action="Index" class="btn btn-sm" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;">
+                        View All <i class="ri-arrow-right-line ms-1"></i>
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="admin-table-3d">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer</th>
+                                <th>Tour</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* @foreach (var booking in Model.RecentBookings.Take(6))
+                            {
+                                <tr>
+                                    <td>#BK@(booking.Id.ToString("D5"))</td>
+                                    <td>@booking.CustomerName</td>
+                                    <td>@booking.TourName</td>
+                                    <td>@booking.BookingDate.ToString("dd MMM yyyy")</td>
+                                    <td>₹@booking.Amount.ToString("N0")</td>
+                                    <td>
+                                        <span class="status-badge-3d @booking.Status.ToLower()">
+                                            <i class="ri-circle-fill"></i> @booking.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Bookings" asp-action="Details" asp-route-id="@booking.Id"
+                                           class="btn btn-sm" style="background: rgba(255,255,255,0.1); color: white; border: none;">
+                                            <i class="ri-eye-line"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            } *@
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="table-container-3d h-100">
+                <div class="table-title-3d">
+                    <span>Top Performing Tours</span>
+                </div>
+                <div class="list-group" style="background: transparent; border: none;">
+                   @*  @foreach (var tour in Model.TopTours.Take(5))
+                    {
+                        <div class="list-group-item border-0 py-3" style="background: transparent; border-color: rgba(255,255,255,0.1) !important;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="mb-0" style="color: white;">@tour.Name</h6>
+                                <span class="badge" style="background: linear-gradient(135deg, #667eea, #764ba2);">@tour.Bookings bookings</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small style="color: rgba(255,255,255,0.7);">Revenue: ₹@tour.Revenue.ToString("N0")</small>
+                                <div class="progress" style="width: 100px; height: 6px; background: rgba(255,255,255,0.1);">
+                                    <div class="progress-bar" style="width: @(tour.Bookings * 100 / Model.TopTours.Max(t => t.Bookings))%; background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    } *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="table-container-3d" data-aos="fade-up" data-aos-delay="400">
+        <div class="table-title-3d">
+            <span>Recent Activity</span>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="text-center p-4" style="border-right: 1px solid rgba(255,255,255,0.1);">
+                    <div class="mb-3">
+                        <div class="mx-auto" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-add-circle-fill text-white fs-4"></i>
+                        </div>
+                    </div>
+                    @* <h4 class="text-white mb-1">@Model.TodayBookings</h4> *@
+                    <p class="mb-0" style="color: rgba(255,255,255,0.7);">Today's Bookings</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4" style="border-right: 1px solid rgba(255,255,255,0.1);">
+                    <div class="mb-3">
+                        <div class="mx-auto" style="width: 60px; height: 60px; background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-check-double-fill text-white fs-4"></i>
+                        </div>
+                    </div>
+                  @*   <h4 class="text-white mb-1">@Model.CompletedBookings</h4> *@
+                    <p class="mb-0" style="color: rgba(255,255,255,0.7);">Completed Today</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4" style="border-right: 1px solid rgba(255,255,255,0.1);">
+                    <div class="mb-3">
+                        <div class="mx-auto" style="width: 60px; height: 60px; background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-time-fill text-white fs-4"></i>
+                        </div>
+                    </div>
+                   @*  <h4 class="text-white mb-1">@Model.PendingBookings</h4> *@
+                    <p class="mb-0" style="color: rgba(255,255,255,0.7);">Pending</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <div class="mx-auto" style="width: 60px; height: 60px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; display: flex; align-items: center; justify-content: center;">
+                            <i class="ri-user-add-fill text-white fs-4"></i>
+                        </div>
+                    </div>
+                    @* <h4 class="text-white mb-1">@Model.NewCustomers</h4> *@
+                    <p class="mb-0" style="color: rgba(255,255,255,0.7);">New Customers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Booking Details -->
+<div class="modal fade" id="bookingModal3d" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                <h5 class="modal-title" style="color: white;">Booking Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter: invert(1);"></button>
+            </div>
+            <div class="modal-body" id="bookingModalBody3d">
+                <!-- Content loaded via JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get data from ViewModel
+            const bookingStatusData = @Html.Raw(Json.Serialize(Model.BookingStatusData));
+            const revenueByMonthData = @Html.Raw(Json.Serialize(Model.RevenueByMonth));
+
+            // 3D Booking Status Chart
+            const bookingStatusCtx3d = document.getElementById('bookingStatusChart3d').getContext('2d');
+            const bookingStatusChart3d = new Chart(bookingStatusCtx3d, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(bookingStatusData),
+                    datasets: [{
+                        data: Object.values(bookingStatusData),
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(79, 172, 254, 0.8)',
+                            'rgba(250, 112, 154, 0.8)',
+                            'rgba(255, 8, 68, 0.8)',
+                            'rgba(240, 147, 251, 0.8)'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 20
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                padding: 20,
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(102, 126, 234, 0.5)',
+                            borderWidth: 1
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // 3D Revenue Chart
+            const revenueCtx3d = document.getElementById('revenueChart3d').getContext('2d');
+            const revenueChart3d = new Chart(revenueCtx3d, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(revenueByMonthData),
+                    datasets: [{
+                        label: 'Revenue',
+                        data: Object.values(revenueByMonthData),
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                        pointBorderColor: 'rgba(255, 255, 255, 1)',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(102, 126, 234, 0.5)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function (context) {
+                                    return `₹${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                callback: function (value) {
+                                    return '₹' + value.toLocaleString();
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // View booking details
+            document.querySelectorAll('.view-booking').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const bookingId = this.getAttribute('data-id');
+                    showBookingDetails(bookingId);
+                });
+            });
+
+            function showBookingDetails(bookingId) {
+                const modal = new bootstrap.Modal(document.getElementById('bookingModal3d'));
+                const modalBody = document.getElementById('bookingModalBody3d');
+
+                modalBody.innerHTML = `
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        `;
+
+                modal.show();
+
+                // Simulate API delay
+                setTimeout(() => {
+                    modalBody.innerHTML = `
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="mb-3" style="color: rgba(255,255,255,0.9);">Booking Information</h6>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">ID:</small>
+                                            <p class="mb-0" style="color: white;">#BK${bookingId.toString().padStart(5, '0')}</p>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">Customer:</small>
+                                            <p class="mb-0" style="color: white;">Rajesh Kumar</p>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">Phone:</small>
+                                            <p class="mb-0" style="color: white;">+91 9876543210</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="mb-3" style="color: rgba(255,255,255,0.9);">Tour Details</h6>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">Route:</small>
+                                            <p class="mb-0" style="color: white;">Pune to Mumbai</p>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">Date:</small>
+                                            <p class="mb-0" style="color: white;">25 Dec, 2024</p>
+                                        </div>
+                                        <div class="mb-2">
+                                            <small style="color: rgba(255,255,255,0.7);">Amount:</small>
+                                            <p class="mb-0" style="color: white;">₹2,500</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                }, 1000);
+            }
+
+            // Auto refresh every 30 seconds
+            setInterval(() => {
+                console.log('Refreshing dashboard data...');
+                // Implement actual data refresh here
+            }, 30000);
+        });
+    </script>
+}

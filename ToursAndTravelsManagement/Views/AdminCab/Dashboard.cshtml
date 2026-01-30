@@ -1,0 +1,270 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.Controllers.AdminCabDashboardViewModel
+@{
+    ViewData["Title"] = "Cab Booking Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h1 class="h3 mb-0">
+                        <i class="ri-dashboard-line me-2"></i> Cab Booking Dashboard
+                    </h1>
+                    <p class="text-muted mb-0">Overview of cab booking system</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-primary text-uppercase mb-1">
+                                Total Cabs
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalCabs</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-taxi-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-success text-uppercase mb-1">
+                                Available Cabs
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.AvailableCabs</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-checkbox-circle-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-info text-uppercase mb-1">
+                                Total Bookings
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TotalBookings</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-booking-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs fw-bold text-warning text-uppercase mb-1">
+                                Today's Bookings
+                            </div>
+                            <div class="h5 mb-0 fw-bold text-gray-800">@Model.TodayBookings</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="ri-calendar-check-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue and Pending Bookings -->
+    <div class="row mb-4">
+        <div class="col-xl-6 col-md-6 mb-4">
+            <div class="card border-left-success shadow-sm h-100">
+                <div class="card-header bg-success text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="ri-money-rupee-circle-line me-2"></i>Total Revenue
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-success">₹@Model.TotalRevenue.ToString("N2")</h2>
+                    <p class="text-muted mb-0">From completed bookings</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-md-6 mb-4">
+            <div class="card border-left-warning shadow-sm h-100">
+                <div class="card-header bg-warning text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="ri-time-line me-2"></i>Pending Bookings
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <h2 class="text-warning">@Model.PendingBookings</h2>
+                    <p class="text-muted mb-0">Requiring attention</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0">
+                        <i class="ri-flashlight-line me-2"></i>Quick Actions
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("CreateCab", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-add-line fs-4 d-block mb-2"></i>
+                                Add Cab
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("CreateRoute", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-road-map-line fs-4 d-block mb-2"></i>
+                                Add Route
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("CreateCabPrice", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-money-rupee-circle-line fs-4 d-block mb-2"></i>
+                                Add Price
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("ManageBookings", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-booking-line fs-4 d-block mb-2"></i>
+                                View Bookings
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("ManageCabs", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-taxi-line fs-4 d-block mb-2"></i>
+                                Manage Cabs
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-6 mb-3">
+                            <a href="@Url.Action("ManageCities", "AdminCab")" class="btn btn-outline-primary w-100">
+                                <i class="ri-map-pin-line fs-4 d-block mb-2"></i>
+                                Manage Cities
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">
+                        <i class="ri-history-line me-2"></i>Recent Bookings
+                    </h6>
+                    <a href="@Url.Action("ManageBookings", "AdminCab")" class="btn btn-light btn-sm">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (Model.RecentBookings.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Customer</th>
+                                        <th>Route</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in Model.RecentBookings)
+                                    {
+                                        <tr>
+                                            <td>@booking.BookingNumber</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(booking.User?.UserName))
+                                                {
+                                                    @booking.User.UserName
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Guest: @booking.GuestName</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @booking.CabRoutePrice?.Route?.FromCity?.Name →
+                                                @booking.CabRoutePrice?.Route?.ToCity?.Name
+                                            </td>
+                                            <td>@booking.TravelDate.ToString("dd MMM")</td>
+                                            <td>₹@booking.TotalPrice</td>
+                                            <td>
+                                                @{
+                                                    var statusColor = booking.Status.ToString() switch
+                                                    {
+                                                        "Pending" => "warning",
+                                                        "Confirmed" => "info",
+                                                        "InProgress" => "primary",
+                                                        "Completed" => "success",
+                                                        "Cancelled" => "danger",
+                                                        _ => "secondary"
+                                                    };
+                                                }
+                                                <span class="badge bg-@statusColor">@booking.Status.ToString()</span>
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("BookingDetails", "AdminCab", new { id = booking.CabBookingId })"
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="ri-booking-line display-4 text-muted mb-3"></i>
+                            <p class="text-muted">No recent bookings found.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

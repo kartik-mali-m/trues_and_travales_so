@@ -1,0 +1,1172 @@
+﻿@* @using ToursAndTravelsManagement.ViewModels
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <input asp-for="Role" class="form-control" />
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@
+
+
+@using ToursAndTravelsManagement.ViewModels
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!-- Navigation Bar -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <!-- Brand on the left -->
+        <div class="nav-brand">
+            <i class="ri-plane-line"></i>
+            <span>Tours & Travels Management</span>
+        </div>
+        
+        <!-- Navigation links on the right -->
+        <div class="nav-links">
+            <a asp-controller="Home" asp-action="Index" class="nav-link">
+                Home
+            </a>
+            <a asp-controller="Home" asp-action="Privacy" class="nav-link">
+                Privacy
+            </a>
+            <a asp-controller="Account" asp-action="Login" class="nav-link">
+                Login
+            </a>
+            <a asp-controller="Account" asp-action="Register" class="nav-link active">
+                Register
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Theme Toggle Button -->
+<div class="theme-toggle" id="themeToggle">
+    <i class="ri-palette-line"></i>
+</div>
+
+<div class="main-container">
+    <div class="form-container" id="authContainer">
+        <div class="form-wrapper" id="formWrapper">
+            <h2 id="formTitle">
+                <i class="ri-user-add-line me-2"></i>Create Account
+            </h2>
+            <p class="form-subtitle">Join our travel community today</p>
+            
+            <!-- Register Form -->
+            <form id="registerForm" 
+                  asp-action="Register" 
+                  method="post"
+                  novalidate>
+                
+                @Html.AntiForgeryToken()
+                
+                <!-- Validation Summary -->
+                <div asp-validation-summary="ModelOnly" class="validation-summary hidden"></div>
+                
+                <!-- Two Column Layout for Name Fields -->
+                <div class="row-fields">
+                    <!-- First Name -->
+                    <div class="input-group half">
+                        <input asp-for="FirstName" 
+                               type="text" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="FirstName">
+                            <i class="ri-user-line me-1"></i>First Name
+                        </label>
+                        <span asp-validation-for="FirstName" class="validation-error"></span>
+                    </div>
+                    
+                    <!-- Last Name -->
+                    <div class="input-group half">
+                        <input asp-for="LastName" 
+                               type="text" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="LastName">
+                            <i class="ri-user-line me-1"></i>Last Name
+                        </label>
+                        <span asp-validation-for="LastName" class="validation-error"></span>
+                    </div>
+                </div>
+                
+                <!-- Email -->
+                <div class="input-group">
+                    <input asp-for="Email" 
+                           type="email" 
+                           class="form-control" 
+                           placeholder=" "
+                           required />
+                    <label asp-for="Email">
+                        <i class="ri-mail-line me-1"></i>Email address
+                    </label>
+                    <span asp-validation-for="Email" class="validation-error"></span>
+                </div>
+                
+                <!-- Two Column Layout for Password Fields -->
+                <div class="row-fields">
+                    <!-- Password -->
+                    <div class="input-group half">
+                        <input asp-for="Password" 
+                               type="password" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="Password">
+                            <i class="ri-lock-password-line me-1"></i>Password
+                        </label>
+                        <span asp-validation-for="Password" class="validation-error"></span>
+                    </div>
+                    
+                    <!-- Confirm Password -->
+                    <div class="input-group half">
+                        <input asp-for="ConfirmPassword" 
+                               type="password" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="ConfirmPassword">
+                            <i class="ri-lock-password-line me-1"></i>Confirm Password
+                        </label>
+                        <span asp-validation-for="ConfirmPassword" class="validation-error"></span>
+                    </div>
+                </div>
+                
+                <!-- Date of Birth -->
+                <div class="input-group">
+                    <input asp-for="DateOfBirth" 
+                           type="date" 
+                           class="form-control" 
+                           placeholder=" "
+                           required />
+                    <label asp-for="DateOfBirth">
+                        <i class="ri-calendar-line me-1"></i>Date of Birth
+                    </label>
+                    <span asp-validation-for="DateOfBirth" class="validation-error"></span>
+                </div>
+                
+                <!-- Address -->
+                <div class="input-group">
+                    <input asp-for="Address" 
+                           type="text" 
+                           class="form-control" 
+                           placeholder=" "
+                           required />
+                    <label asp-for="Address">
+                        <i class="ri-map-pin-line me-1"></i>Address
+                    </label>
+                    <span asp-validation-for="Address" class="validation-error"></span>
+                </div>
+                
+                <!-- Two Column Layout for City & Country -->
+                <div class="row-fields">
+                    <!-- City -->
+                    <div class="input-group half">
+                        <input asp-for="City" 
+                               type="text" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="City">
+                            <i class="ri-building-line me-1"></i>City
+                        </label>
+                        <span asp-validation-for="City" class="validation-error"></span>
+                    </div>
+                    
+                    <!-- Country -->
+                    <div class="input-group half">
+                        <input asp-for="Country" 
+                               type="text" 
+                               class="form-control" 
+                               placeholder=" "
+                               required />
+                        <label asp-for="Country">
+                            <i class="ri-globe-line me-1"></i>Country
+                        </label>
+                        <span asp-validation-for="Country" class="validation-error"></span>
+                    </div>
+                </div>
+                
+                <!-- Role (as dropdown) -->
+                <div class="input-group">
+                    <select asp-for="Role" 
+                            class="form-control"
+                            required>
+                        <option value="">Select Role</option>
+                        <option value="Customer">Customer</option>
+                        <option value="Agent">Travel Agent</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                    <label asp-for="Role">
+                        <i class="ri-shield-user-line me-1"></i>Role
+                    </label>
+                    <span asp-validation-for="Role" class="validation-error"></span>
+                </div>
+                
+                <!-- Terms Agreement -->
+                <div class="toggle-group terms-group">
+                    <label class="switch">
+                        <input type="checkbox" id="agreeTerms" required />
+                        <span class="slider"></span>
+                    </label>
+                    <span>
+                        I agree to the <a href="#" class="terms-link">Terms & Conditions</a>
+                    </span>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" id="registerSubmitBtn" class="submit-btn">
+                    <i class="ri-user-add-line me-1"></i> Create Account
+                </button>
+                
+                <!-- Form Toggle Link -->
+                <p class="switch-text">
+                    Already have an account?
+                    <a asp-action="Login" 
+                       class="form-toggle-link"
+                       id="loginLink">Login here</a>
+                </p>
+            </form>
+            
+            <!-- Success Message (Hidden by default) -->
+            <div class="success-message hidden" id="successMessage">
+                <h3><i class="ri-checkbox-circle-line me-2"></i> Registration Successful!</h3>
+                <p>Welcome to Tours & Travels Management!</p>
+                <button onclick="location.href='@Url.Action("Login", "Account")'">Go to Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <p class="footer-text">
+        © @DateTime.Now.Year Tours & Travels Management
+    </p>
+</footer>
+
+<style>
+    /* ===== CSS Variables for Themes ===== */
+    :root {
+        --bg: #e0e5ec;
+        --container-bg: #e0e5ec;
+        --input-bg: #ecf0f3;
+        --shadow-dark: #a3b1c6;
+        --shadow-light: #ffffff;
+        --accent: #6c63ff;
+        --accent-light: #8f94fb;
+        --text: #333;
+        --text-light: #666;
+        --nav-bg: #ffffff;
+        --nav-shadow: rgba(0, 0, 0, 0.1);
+        --success: #4caf50;
+        --error: #f44336;
+        --card-radius: 30px;
+        --input-radius: 15px;
+        --nav-height: 80px;
+    }
+
+    body.pink-theme {
+        --bg: #f5e9ec;
+        --container-bg: #f5e9ec;
+        --input-bg: #fdf6f9;
+        --shadow-dark: #d4b9c3;
+        --shadow-light: #fff;
+        --accent: #e38cad;
+        --accent-light: #f5a3c7;
+        --text: #444;
+        --text-light: #666;
+        --nav-bg: #fff5f8;
+    }
+
+    /* ===== Reset & Base Styles ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        transition: background 0.4s ease;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ===== Navigation Bar ===== */
+    .main-nav {
+        background: var(--nav-bg);
+        box-shadow: 0 4px 20px var(--nav-shadow);
+        height: var(--nav-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 60px;
+    }
+
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--accent);
+        white-space: nowrap;
+    }
+
+    .nav-brand i {
+        margin-right: 12px;
+        font-size: 2rem;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 10px 0;
+        position: relative;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .nav-link:hover {
+        color: var(--accent);
+    }
+
+    .nav-link.active {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 2px;
+    }
+
+    /* ===== Theme Toggle ===== */
+    .theme-toggle {
+        position: fixed;
+        top: 100px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: var(--container-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 8px 8px 20px var(--shadow-dark),
+                    -8px -8px 20px var(--shadow-light);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 999;
+        font-size: 1.8rem;
+        color: var(--accent);
+    }
+
+    .theme-toggle:hover {
+        transform: rotate(15deg) scale(1.15);
+        box-shadow: 12px 12px 30px var(--shadow-dark),
+                    -12px -12px 30px var(--shadow-light);
+    }
+
+    /* ===== Main Container ===== */
+    .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: var(--nav-height);
+        padding: calc(var(--nav-height) + 50px) 20px 50px;
+        width: 100%;
+    }
+
+    /* ===== Form Container ===== */
+    .form-container {
+        width: 100%;
+        max-width: 800px; /* Wider for register form */
+        animation: fadeSlideIn 0.6s ease;
+    }
+
+    .form-wrapper {
+        width: 100%;
+        padding: 60px;
+        border-radius: var(--card-radius);
+        background: var(--container-bg);
+        box-shadow: 25px 25px 75px var(--shadow-dark),
+                    -25px -25px 75px var(--shadow-light);
+        transition: all 0.6s ease;
+    }
+
+    @@keyframes fadeSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ===== Form Header ===== */
+    .form-wrapper h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 2.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-subtitle {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 50px;
+        font-size: 1.3rem;
+        opacity: 0.8;
+    }
+
+    /* ===== Row Layout for Two Columns ===== */
+    .row-fields {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .row-fields .input-group.half {
+        flex: 1;
+        margin-bottom: 0;
+    }
+
+    /* ===== Input Groups ===== */
+    .input-group {
+        position: relative;
+        margin-bottom: 40px;
+        border-radius: var(--input-radius);
+        background: var(--input-bg);
+        box-shadow: inset 10px 10px 20px var(--shadow-dark),
+                    inset -10px -10px 20px var(--shadow-light);
+        padding: 25px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .input-group:hover {
+        box-shadow: 0 0 0 3px var(--accent),
+                    inset 10px 10px 20px var(--shadow-dark),
+                    inset -10px -10px 20px var(--shadow-light);
+    }
+
+    .input-group input,
+    .input-group select {
+        width: 100%;
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 1.2rem;
+        color: var(--text);
+        padding-top: 10px;
+        font-weight: 500;
+    }
+
+    .input-group select {
+        appearance: none;
+        cursor: pointer;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 25px;
+        left: 30px;
+        font-size: 1.1rem;
+        color: var(--text-light);
+        transition: 0.3s ease;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .input-group label i {
+        margin-right: 12px;
+        color: var(--accent);
+        font-size: 1.3rem;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label,
+    .input-group select:focus + label,
+    .input-group select:not(:placeholder-shown) + label {
+        top: 12px;
+        font-size: 1rem;
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    /* ===== Terms Agreement ===== */
+    .terms-group {
+        margin-bottom: 40px;
+        font-size: 1.1rem;
+        color: var(--text);
+    }
+
+    .terms-link {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+
+    .terms-link:hover {
+        text-decoration: underline;
+    }
+
+    /* ===== Toggle Switch ===== */
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        color: var(--text);
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        margin-right: 15px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        transition: 0.4s;
+        box-shadow: inset 4px 4px 10px var(--shadow-dark);
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.4s;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+        background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    /* ===== Submit Button ===== */
+    .submit-btn {
+        width: 100%;
+        padding: 22px;
+        border: none;
+        border-radius: var(--input-radius);
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        color: white;
+        font-weight: 600;
+        font-size: 1.3rem;
+        box-shadow: 10px 10px 25px var(--shadow-dark),
+                    -10px -10px 25px var(--shadow-light);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 35px;
+        letter-spacing: 0.5px;
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(135deg, var(--accent-light), var(--accent));
+        transform: translateY(-3px);
+        box-shadow: 15px 15px 35px var(--shadow-dark),
+                    -15px -15px 35px var(--shadow-light);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* ===== Switch Text ===== */
+    .switch-text {
+        text-align: center;
+        font-size: 1.2rem;
+        color: var(--text-light);
+        margin: 0;
+        padding-top: 25px;
+        border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .form-toggle-link {
+        color: var(--accent);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .form-toggle-link:hover {
+        text-decoration: underline;
+        color: var(--accent-light);
+    }
+
+    /* ===== Success Message ===== */
+    .success-message {
+        text-align: center;
+        animation: fadeIn 0.6s ease forwards;
+        padding: 50px;
+    }
+
+    .success-message h3 {
+        color: var(--success);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    .success-message p {
+        color: var(--text-light);
+        margin-bottom: 30px;
+        font-size: 1.2rem;
+    }
+
+    .success-message button {
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        color: white;
+        border: none;
+        padding: 20px 45px;
+        border-radius: var(--input-radius);
+        font-weight: 600;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 10px 10px 25px var(--shadow-dark),
+                    -10px -10px 25px var(--shadow-light);
+    }
+
+    .success-message button:hover {
+        transform: translateY(-3px);
+        box-shadow: 15px 15px 35px var(--shadow-dark),
+                    -15px -15px 35px var(--shadow-light);
+    }
+
+    /* ===== Validation ===== */
+    .validation-summary {
+        background-color: rgba(244, 67, 54, 0.1);
+        border: 1px solid var(--error);
+        color: var(--error);
+        padding: 25px;
+        border-radius: var(--input-radius);
+        margin-bottom: 35px;
+        font-size: 1.1rem;
+    }
+
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .validation-error {
+        color: var(--error);
+        font-size: 1rem;
+        margin-top: 10px;
+        display: block;
+        font-weight: 500;
+    }
+
+    /* ===== Footer ===== */
+    .main-footer {
+        background: var(--nav-bg);
+        padding: 30px 0;
+        text-align: center;
+        margin-top: auto;
+        box-shadow: 0 -4px 20px var(--nav-shadow);
+    }
+
+    .footer-text {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        opacity: 0.8;
+        font-weight: 500;
+    }
+
+    /* ===== Utility Classes ===== */
+    .hidden {
+        display: none !important;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ===== Responsive Design ===== */
+    @@media (max-width: 1200px) {
+        .nav-container {
+            padding: 0 40px;
+        }
+        
+        .form-wrapper {
+            padding: 50px;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .nav-container {
+            padding: 0 30px;
+        }
+        
+        .nav-links {
+            gap: 30px;
+        }
+        
+        .form-wrapper {
+            padding: 45px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2.5rem;
+        }
+        
+        .row-fields {
+            flex-direction: column;
+            gap: 40px;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            height: auto;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .nav-brand {
+            font-size: 1.4rem;
+        }
+        
+        .nav-links {
+            gap: 25px;
+        }
+        
+        .nav-link {
+            font-size: 1rem;
+        }
+        
+        .form-wrapper {
+            padding: 40px 35px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2.3rem;
+        }
+        
+        .theme-toggle {
+            top: 140px;
+            width: 55px;
+            height: 55px;
+            font-size: 1.6rem;
+        }
+        
+        .main-container {
+            padding-top: 160px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .nav-links {
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .form-wrapper {
+            padding: 35px 30px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2rem;
+        }
+        
+        .input-group {
+            padding: 20px 25px;
+        }
+        
+        .input-group input,
+        .input-group select {
+            font-size: 1.1rem;
+        }
+        
+        .submit-btn {
+            padding: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .theme-toggle {
+            top: 120px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .nav-container {
+            padding: 15px;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+        }
+        
+        .nav-brand i {
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            gap: 15px;
+        }
+        
+        .nav-link {
+            font-size: 0.95rem;
+        }
+        
+        .form-wrapper {
+            padding: 30px 25px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            padding: 18px 20px;
+        }
+        
+        .submit-btn {
+            padding: 18px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // DOM Elements
+        const themeToggle = document.querySelector("#themeToggle");
+        const authContainer = document.querySelector("#authContainer");
+        const registerForm = document.querySelector("#registerForm");
+        const agreeTerms = document.querySelector("#agreeTerms");
+        const registerSubmitBtn = document.querySelector("#registerSubmitBtn");
+
+        // Check if there are validation errors
+        document.addEventListener('DOMContentLoaded', function() {
+            const validationSummary = document.querySelector('.validation-summary');
+            if (validationSummary && validationSummary.textContent.trim() !== '') {
+                validationSummary.classList.remove('hidden');
+            }
+            
+            // Set active navigation link based on current page
+            const currentPath = window.location.pathname.toLowerCase();
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkPath = link.getAttribute('href').toLowerCase();
+                if (currentPath.includes(linkPath) || 
+                    (currentPath.includes('register') && linkPath.includes('register'))) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Initialize date input to show placeholder properly
+            const dateInput = document.querySelector('#DateOfBirth');
+            if (dateInput) {
+                // Set min date (18 years ago)
+                const today = new Date();
+                const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+                const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                
+                dateInput.min = minDate.toISOString().split('T')[0];
+                dateInput.max = maxDate.toISOString().split('T')[0];
+                
+                // Format date display
+                dateInput.addEventListener('change', function() {
+                    if (this.value) {
+                        const label = this.nextElementSibling;
+                        label.style.top = '12px';
+                        label.style.fontSize = '1rem';
+                        label.style.color = 'var(--accent)';
+                        label.style.fontWeight = '600';
+                    }
+                });
+            }
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('pink-theme');
+            
+            // Store theme preference
+            const isPink = document.body.classList.contains('pink-theme');
+            localStorage.setItem('theme', isPink ? 'pink' : 'default');
+            
+            // Add animation to container
+            authContainer.style.animation = 'none';
+            setTimeout(() => {
+                authContainer.style.animation = 'fadeSlideIn 0.6s ease';
+            }, 10);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'pink') {
+            document.body.classList.add('pink-theme');
+        }
+
+        // Form submission handling
+        registerForm.addEventListener('submit', function(e) {
+            // Check terms agreement
+            if (!agreeTerms.checked) {
+                e.preventDefault();
+                alert('Please agree to the Terms & Conditions');
+                agreeTerms.focus();
+                return false;
+            }
+            
+            // Check password match
+            const password = document.querySelector('#Password').value;
+            const confirmPassword = document.querySelector('#ConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                const confirmInput = document.querySelector('#ConfirmPassword');
+                confirmInput.parentElement.style.boxShadow = '0 0 0 3px var(--error), inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+                alert('Passwords do not match!');
+                return false;
+            }
+            
+            // Check validation
+            if (!this.checkValidity()) {
+                e.preventDefault();
+                // Show validation summary
+                const summary = this.querySelector('.validation-summary');
+                if (summary) {
+                    summary.classList.remove('hidden');
+                }
+                return false;
+            }
+            
+            // Optional: Show success message for demo
+            // Remove this in production and let form submit normally
+            // e.preventDefault();
+            // showSuccess();
+            // return false;
+        });
+
+        // Success Message Function
+        function showSuccess() {
+            const successMsg = document.getElementById('successMessage');
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                form.style.opacity = '0';
+                form.style.transform = 'scaleY(0)';
+            });
+            
+            setTimeout(() => {
+                forms.forEach(form => {
+                    form.style.display = 'none';
+                });
+                successMsg.classList.remove('hidden');
+                successMsg.style.display = 'block';
+            }, 400);
+        }
+
+        // Input focus effects
+        document.querySelectorAll('.input-group input, .input-group select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.boxShadow = '0 0 0 3px var(--accent), inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.boxShadow = 'inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+            });
+            
+            // Trigger label animation if there's a value
+            if (input.value) {
+                const label = input.nextElementSibling;
+                if (label && label.tagName === 'LABEL') {
+                    label.style.top = '12px';
+                    label.style.fontSize = '1rem';
+                    label.style.color = 'var(--accent)';
+                    label.style.fontWeight = '600';
+                }
+            }
+        });
+        
+        // Real-time password match validation
+        const passwordInput = document.querySelector('#Password');
+        const confirmPasswordInput = document.querySelector('#ConfirmPassword');
+        
+        if (passwordInput && confirmPasswordInput) {
+            const validatePasswordMatch = () => {
+                if (passwordInput.value && confirmPasswordInput.value) {
+                    if (passwordInput.value !== confirmPasswordInput.value) {
+                        confirmPasswordInput.parentElement.style.boxShadow = '0 0 0 3px var(--error), inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+                    } else {
+                        confirmPasswordInput.parentElement.style.boxShadow = '0 0 0 3px var(--success), inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+                    }
+                }
+            };
+            
+            passwordInput.addEventListener('input', validatePasswordMatch);
+            confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+        }
+        
+        // Navigation active state on click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+    
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

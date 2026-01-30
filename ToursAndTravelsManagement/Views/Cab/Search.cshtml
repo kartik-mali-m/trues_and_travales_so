@@ -1,0 +1,218 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.ViewModels.CabSearchViewModel
+@{
+    ViewData["Title"] = "Book Cab - Search";
+    Layout = "~/Views/Shared/_AnotherLayout.cshtml";
+}
+
+<section class="position-relative overflow-hidden bg-gradient" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh;">
+    <div class="container position-relative z-1 py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center text-white" data-aos="fade-up">
+                <h6 class="text-warning mb-3" data-aos="fade-up" data-aos-delay="100">EXPERIENCE THE JOURNEY</h6>
+                <h1 class="display-4 fw-bold mb-4" style="color: white !important;" data-aos="fade-up" data-aos-delay="200">
+                    Discover Amazing Destinations With Us
+                </h1>
+                <p class="lead mb-5" data-aos="fade-up" data-aos-delay="300">Professional tour & travel services with 15+ years of experience. Safe, reliable, and affordable journeys across Maharashtra.</p>
+
+                <!-- Booking Card -->
+                <div class="booking-card p-4 p-lg-5 rounded-4 bg-white bg-opacity-95 shadow-lg" data-aos="fade-up" data-aos-delay="400">
+                    <h4 class="mb-4 text-dark">Book Your Ride</h4>
+
+                    <form asp-action="SearchResults" method="post" class="row g-3">
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <select asp-for="FromCity" class="form-control" id="fromCity" required>
+                                    <option value="">Select City</option>
+                                    @foreach (var city in ViewBag.PopularCities)
+                                    {
+                                        <option value="@city.Name">@city.Name</option>
+                                    }
+                                </select>
+                                <label for="fromCity">
+                                    <i class="ri-map-pin-fill text-primary me-2"></i>From City
+                                </label>
+                                <span asp-validation-for="FromCity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <select asp-for="ToCity" class="form-control" id="toCity" required>
+                                    <option value="">Select City</option>
+                                    @foreach (var city in ViewBag.PopularCities)
+                                    {
+                                        <option value="@city.Name">@city.Name</option>
+                                    }
+                                </select>
+                                <label for="toCity">
+                                    <i class="ri-map-pin-line text-primary me-2"></i>To City
+                                </label>
+                                <span asp-validation-for="ToCity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <input asp-for="TravelDate" type="date" class="form-control" id="travelDate"
+                                       min="@DateTime.Today.ToString("yyyy-MM-dd")" required>
+                                <label for="travelDate">
+                                    <i class="ri-calendar-2-fill text-primary me-2"></i>Travel Date
+                                </label>
+                                <span asp-validation-for="TravelDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <select asp-for="JourneyType" class="form-control" id="journeyType" required>
+                                    <option value="">Select Journey Type</option>
+                                    <option value="1">One Way</option>
+                                    <option value="2">Outstation</option>
+                                    <option value="3">Local</option>
+                                    <option value="4">Transfer</option>
+                                </select>
+                                <label for="journeyType">
+                                    <i class="ri-road-map-fill text-primary me-2"></i>Journey Type
+                                </label>
+                                <span asp-validation-for="JourneyType" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="passengers" placeholder="Passengers" min="1" max="10" value="1">
+                                <label for="passengers">
+                                    <i class="ri-user-fill text-primary me-2"></i>Passengers
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary w-100 py-3 rounded-3 fw-bold">
+                                SEARCH AVAILABLE CABS <i class="ri-arrow-right-line ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="row mt-4 g-3">
+                        <div class="col-md-3 col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="ri-checkbox-circle-fill text-success fs-4 me-2"></i>
+                                <small class="text-muted">Verified Drivers</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="ri-shield-check-fill text-success fs-4 me-2"></i>
+                                <small class="text-muted">Safe Travel</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="ri-money-rupee-circle-fill text-success fs-4 me-2"></i>
+                                <small class="text-muted">Best Price</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="d-flex align-items-center">
+                                <i class="ri-phone-fill text-success fs-4 me-2"></i>
+                                <small class="text-muted">24/7 Support</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popular Routes -->
+                <div class="mt-5">
+                    <h4 class="text-white mb-4">Popular Routes</h4>
+                    <div class="row g-4">
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="ri-map-pin-2-fill display-4 text-primary mb-3"></i>
+                                    <h5 class="card-title">Pune → Mumbai</h5>
+                                    <p class="text-muted mb-2">Starting from ₹2,500</p>
+                                    <a href="@Url.Action("SearchResults", "Cab", new { fromCity = "Pune", toCity = "Mumbai", travelDate = DateTime.Today, journeyType = 1 })"
+                                       class="btn btn-outline-primary btn-sm">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="ri-map-pin-2-fill display-4 text-primary mb-3"></i>
+                                    <h5 class="card-title">Mumbai → Goa</h5>
+                                    <p class="text-muted mb-2">Starting from ₹8,500</p>
+                                    <a href="@Url.Action("SearchResults", "Cab", new { fromCity = "Mumbai", toCity = "Goa", travelDate = DateTime.Today, journeyType = 1 })"
+                                       class="btn btn-outline-primary btn-sm">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="700">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="ri-map-pin-2-fill display-4 text-primary mb-3"></i>
+                                    <h5 class="card-title">Pune → Goa</h5>
+                                    <p class="text-muted mb-2">Starting from ₹9,500</p>
+                                    <a href="@Url.Action("SearchResults", "Cab", new { fromCity = "Pune", toCity = "Goa", travelDate = DateTime.Today, journeyType = 1 })"
+                                       class="btn btn-outline-primary btn-sm">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                            <div class="text-center p-4 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-25 hover-lift">
+                                <i class="ri-group-fill display-4 text-warning mb-3"></i>
+                                <h4 class="text-white">50,000+</h4>
+                                <p class="text-white-50 mb-0">Happy Customers</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                            <div class="text-center p-4 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-25 hover-lift">
+                                <i class="ri-roadster-fill display-4 text-warning mb-3"></i>
+                                <h4 class="text-white">500+</h4>
+                                <p class="text-white-50 mb-0">Fleet Vehicles</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="700">
+                            <div class="text-center p-4 rounded-3 bg-white bg-opacity-10 border border-white border-opacity-25 hover-lift">
+                                <i class="ri-map-pin-2-fill display-4 text-warning mb-3"></i>
+                                <h4 class="text-white">100+</h4>
+                                <p class="text-white-50 mb-0">Cities Covered</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-absolute bottom-0 start-0 end-0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,192C672,181,768,139,864,128C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Set minimum date to today
+        document.getElementById('travelDate').min = new Date().toISOString().split('T')[0];
+
+        // Swap cities functionality
+        document.getElementById('swapCities').addEventListener('click', function () {
+            const fromCity = document.getElementById('fromCity').value;
+            const toCity = document.getElementById('toCity').value;
+
+            document.getElementById('fromCity').value = toCity;
+            document.getElementById('toCity').value = fromCity;
+        });
+    </script>
+}

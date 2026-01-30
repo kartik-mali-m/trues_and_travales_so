@@ -1,0 +1,274 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.ViewModels.CabBookingViewModel
+@{
+    ViewData["Title"] = "Complete Your Booking";
+    var cabDetails = ViewBag.CabDetails as ToursAndTravelsManagement.Models.CabRoutePrice;
+    Layout = "~/Views/Shared/_AnotherLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Progress Bar -->
+            <div class="mb-5">
+                <div class="progress" style="height: 8px;">
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="text-primary"><i class="ri-search-line me-1"></i> Search</span>
+                    <span class="text-primary"><i class="ri-checkbox-circle-line me-1"></i> Select Cab</span>
+                    <span class="text-primary fw-bold"><i class="ri-pencil-line me-1"></i> Booking Details</span>
+                    <span class="text-muted"><i class="ri-bank-card-line me-1"></i> Payment</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Cab Details Card -->
+                <div class="col-md-5 mb-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Cab Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="text-primary">@cabDetails.Cab.Name</h6>
+                            <p class="mb-2">
+                                <i class="ri-map-pin-line me-1"></i>
+                                @cabDetails.Route.FromCity.Name → @cabDetails.Route.ToCity.Name
+                            </p>
+                            <p class="mb-2">
+                                <i class="ri-user-line me-1"></i>
+                                @cabDetails.Cab.SeatingCapacity Seater
+                                @if (cabDetails.Cab.HasAC)
+                                {
+                                    <span class="badge bg-success ms-2">A/C</span>
+                                }
+                            </p>
+                            <div class="mt-3">
+                                <h4 class="text-success">₹@cabDetails.Price</h4>
+                                <small class="text-muted">Total fare inclusive of all taxes</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Important Notes -->
+                    <div class="card shadow-sm border-0 mt-3 border-warning">
+                        <div class="card-header bg-warning bg-opacity-25">
+                            <h6 class="mb-0"><i class="ri-alert-line me-2"></i>Important Notes</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="small text-muted mb-0">
+                                <li>Please arrive at pickup point 15 minutes before scheduled time</li>
+                                <li>Driver contact details will be shared after booking confirmation</li>
+                                <li>Cancellation charges apply as per policy</li>
+                                <li>Extra charges for night journeys (10 PM - 6 AM)</li>
+                                <li>Toll and parking charges are included in fare</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="col-md-7">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Passenger Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="Book" method="post">
+                                <input type="hidden" asp-for="CabRoutePriceId" value="@cabDetails.CabRoutePriceId" />
+
+                                @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <div class="alert alert-info mb-4">
+                                        <i class="ri-information-line me-2"></i>
+                                        You are booking as a guest.
+                                        <a href="@Url.Action("Login", "Account")" class="alert-link">Login</a> for faster booking and tracking.
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label asp-for="GuestName" class="form-label">Full Name *</label>
+                                            <input asp-for="GuestName" class="form-control" required />
+                                            <span asp-validation-for="GuestName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="GuestEmail" class="form-label">Email *</label>
+                                            <input asp-for="GuestEmail" type="email" class="form-control" required />
+                                            <span asp-validation-for="GuestEmail" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <label asp-for="GuestPhone" class="form-label">Phone Number *</label>
+                                            <input asp-for="GuestPhone" class="form-control" required />
+                                            <span asp-validation-for="GuestPhone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-success mb-4">
+                                        <i class="ri-checkbox-circle-line me-2"></i>
+                                        Booking as: @User.Identity.Name
+                                    </div>
+                                }
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="TravelDate" class="form-label">Travel Date *</label>
+                                        <input asp-for="TravelDate" type="date"
+                                               min="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                               class="form-control" required />
+                                        <span asp-validation-for="TravelDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="PickupTime" class="form-label">Pickup Time *</label>
+                                        <input asp-for="PickupTime" type="time" class="form-control" required />
+                                        <span asp-validation-for="PickupTime" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="PickupLocation" class="form-label">Pickup Location *</label>
+                                        <input asp-for="PickupLocation" class="form-control"
+                                               placeholder="Enter exact pickup address" required />
+                                        <span asp-validation-for="PickupLocation" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="DropoffLocation" class="form-label">Dropoff Location *</label>
+                                        <input asp-for="DropoffLocation" class="form-control"
+                                               value="@cabDetails.Route.ToCity.Name"
+                                               placeholder="Enter dropoff address" required />
+                                        <span asp-validation-for="DropoffLocation" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="NumberOfPassengers" class="form-label">Number of Passengers *</label>
+                                        <input asp-for="NumberOfPassengers" type="number"
+                                               min="1" max="@cabDetails.Cab.SeatingCapacity"
+                                               class="form-control" required />
+                                        <span asp-validation-for="NumberOfPassengers" class="text-danger"></span>
+                                        <small class="text-muted">Max: @cabDetails.Cab.SeatingCapacity passengers</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="PaymentMethod" class="form-label">Payment Method *</label>
+                                        <select asp-for="PaymentMethod" class="form-select" required>
+                                            <option value="">Select Payment Method</option>
+                                            <option value="1">Cash</option>
+                                            <option value="2">Online Payment</option>
+                                            <option value="3">Credit Card</option>
+                                            <option value="4">Debit Card</option>
+                                            <option value="5">UPI</option>
+                                        </select>
+                                        <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label asp-for="AdditionalNotes" class="form-label">Additional Notes (Optional)</label>
+                                    <textarea asp-for="AdditionalNotes" class="form-control" rows="3"
+                                              placeholder="Any special requirements or instructions for driver..."></textarea>
+                                    <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
+                                </div>
+
+                                <!-- Fare Breakdown -->
+                                <div class="card border-0 bg-light mb-4">
+                                    <div class="card-body">
+                                        <h6 class="mb-3">Fare Breakdown</h6>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Base Fare</span>
+                                            <span>₹@cabDetails.Price</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Taxes & Charges</span>
+                                            <span>₹0</span>
+                                        </div>
+                                        <hr />
+                                        <div class="d-flex justify-content-between fw-bold">
+                                            <span>Total Amount</span>
+                                            <span class="text-success">₹@cabDetails.Price</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Terms & Conditions -->
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms & Conditions</a> and
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#cancellationModal">Cancellation Policy</a>
+                                    </label>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="ri-bank-card-line me-2"></i>Proceed to Payment
+                                    </button>
+                                    <a href="@Url.Action("SearchResults", "Cab")" class="btn btn-outline-secondary">
+                                        <i class="ri-arrow-left-line me-2"></i>Back to Cab Selection
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Booking Terms:</h6>
+                <ul>
+                    <li>Booking confirmation is subject to cab availability</li>
+                    <li>Passengers must carry valid ID proof</li>
+                    <li>Driver may refuse service if passenger is intoxicated</li>
+                    <li>Smoking and alcohol consumption in cab is strictly prohibited</li>
+                </ul>
+
+                <h6>Payment Terms:</h6>
+                <ul>
+                    <li>Full payment required for booking confirmation</li>
+                    <li>Online payments are secured and encrypted</li>
+                    <li>Refunds processed within 5-7 working days</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancellation Modal -->
+<div class="modal fade" id="cancellationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cancellation Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Free cancellation up to 24 hours before pickup time</li>
+                    <li>50% charges if cancelled between 24-12 hours before pickup</li>
+                    <li>No refund if cancelled less than 12 hours before pickup</li>
+                    <li>Full refund for cancellations due to cab unavailability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

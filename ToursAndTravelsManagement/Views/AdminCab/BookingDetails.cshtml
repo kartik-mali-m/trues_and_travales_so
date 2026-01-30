@@ -1,0 +1,313 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.Models.CabBooking
+@{
+    ViewData["Title"] = "Booking Details";
+    var statusList = ViewBag.StatusList as IEnumerable<dynamic>;
+    var paymentStatusList = ViewBag.PaymentStatusList as IEnumerable<dynamic>;
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="ri-booking-line me-2"></i>Booking Details: @Model.BookingNumber
+                    </h5>
+                    <a href="@Url.Action("ManageBookings", "AdminCab")" class="btn btn-light btn-sm">
+                        <i class="ri-arrow-left-line me-1"></i>Back to List
+                    </a>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+                        @TempData["Success"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <div class="card-body">
+                    <!-- Booking Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Booking Information</h6>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <td><strong>Booking ID:</strong></td>
+                                    <td>@Model.BookingNumber</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Booking Date:</strong></td>
+                                    <td>@Model.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Created By:</strong></td>
+                                    <td>@Model.CreatedBy</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Last Updated:</strong></td>
+                                    <td>
+                                        @if (Model.UpdatedDate.HasValue)
+                                        {
+                                            @Model.UpdatedDate.Value.ToString("dd MMM yyyy hh:mm tt")
+                                            <small class="text-muted">by @Model.UpdatedBy</small>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not updated</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6>Customer Information</h6>
+                            <table class="table table-sm table-bordered">
+                                @if (!string.IsNullOrEmpty(Model.UserId))
+                                {
+                                    <tr>
+                                        <td><strong>User:</strong></td>
+                                        <td>@Model.User?.UserName</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email:</strong></td>
+                                        <td>@Model.User?.Email</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td><strong>Name:</strong></td>
+                                        <td>@Model.GuestName</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email:</strong></td>
+                                        <td>@Model.GuestEmail</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Phone:</strong></td>
+                                        <td>@Model.GuestPhone</td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Travel Information -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6>Travel Information</h6>
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4 text-center">
+                                            <div class="mb-2">
+                                                <i class="ri-map-pin-2-fill text-danger fs-4"></i>
+                                            </div>
+                                            <strong>@Model.CabRoutePrice?.Route?.FromCity?.Name</strong>
+                                            <div class="small text-muted">@Model.PickupLocation</div>
+                                            <div class="small">@Model.PickupTime.ToString(@"hh\:mm")</div>
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <div class="mb-2">
+                                                <i class="ri-arrow-right-line text-primary fs-4"></i>
+                                            </div>
+                                            <strong>@Model.CabRoutePrice?.Cab?.Name</strong>
+                                            <div class="small text-muted">@Model.CabRoutePrice?.Cab?.SeatingCapacity Seater</div>
+                                            @if (Model.CabRoutePrice?.Cab?.HasAC == true)
+                                            {
+                                                <span class="badge bg-success">A/C</span>
+                                            }
+                                        </div>
+                                        <div class="col-md-4 text-center">
+                                            <div class="mb-2">
+                                                <i class="ri-map-pin-fill text-success fs-4"></i>
+                                            </div>
+                                            <strong>@Model.CabRoutePrice?.Route?.ToCity?.Name</strong>
+                                            <div class="small text-muted">@Model.DropoffLocation</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Pricing Information</h6>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <td><strong>Base Fare:</strong></td>
+                                    <td>₹@Model.BasePrice</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Extra Charges:</strong></td>
+                                    <td>₹@Model.ExtraCharges</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discount:</strong></td>
+                                    <td>₹@Model.Discount</td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td><strong>Total Amount:</strong></td>
+                                    <td><strong>₹@Model.TotalPrice</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Method:</strong></td>
+                                    <td>@Model.PaymentMethod.ToString()</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Status:</strong></td>
+                                    <td>
+                                        <span class="badge bg-@(Model.PaymentStatus.ToString() == "Completed" ? "success" : "warning")">
+                                            @Model.PaymentStatus.ToString()
+                                        </span>
+                                        @if (Model.PaymentDate.HasValue)
+                                        {
+                                            <div class="small text-muted">@Model.PaymentDate.Value.ToString("dd MMM yyyy hh:mm tt")</div>
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6>Driver Assignment</h6>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <td><strong>Driver Name:</strong></td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(Model.AssignedDriverName))
+                                        {
+                                            @Model.AssignedDriverName
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Not assigned</span>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Driver Phone:</strong></td>
+                                    <td>@Model.AssignedDriverPhone</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Vehicle Number:</strong></td>
+                                    <td>@Model.VehicleNumber</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Status Management -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0">Update Booking Status</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="UpdateBookingStatus" method="post" class="row g-3">
+                                        <input type="hidden" name="id" value="@Model.CabBookingId" />
+                                        <div class="col-md-8">
+                                            <select name="status" class="form-select" required>
+                                                @foreach (var status in statusList)
+                                                {
+                                                    <option value="@status.Id"
+                                                            selected="@(status.Id == (int)Model.Status)">
+                                                        @status.Name
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-primary w-100">
+                                                Update
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0">Update Payment Status</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="UpdatePaymentStatus" method="post" class="row g-3">
+                                        <input type="hidden" name="id" value="@Model.CabBookingId" />
+                                        <div class="col-md-8">
+                                            <select name="status" class="form-select" required>
+                                                @foreach (var status in paymentStatusList)
+                                                {
+                                                    <option value="@status.Id"
+                                                            selected="@(status.Id == (int)Model.PaymentStatus)">
+                                                        @status.Name
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="submit" class="btn btn-success w-100">
+                                                Update
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assign Driver -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-warning text-white">
+                            <h6 class="mb-0">Assign Driver</h6>
+                        </div>
+                        <div class="card-body">
+                            <form asp-action="AssignDriver" method="post">
+                                <input type="hidden" name="id" value="@Model.CabBookingId" />
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <input type="text" name="driverName" class="form-control"
+                                               placeholder="Driver Name" value="@Model.AssignedDriverName">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="driverPhone" class="form-control"
+                                               placeholder="Driver Phone" value="@Model.AssignedDriverPhone">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-warning w-100">
+                                            Assign Driver
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information -->
+                    @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
+                    {
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0">Additional Notes</h6>
+                            </div>
+                            <div class="card-body">
+                                @Model.AdditionalNotes
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,841 @@
+﻿@* @using ToursAndTravelsManagement.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                            @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+                <div class="form-group">
+                    <p>
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
+                    </p>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@
+
+
+
+@using ToursAndTravelsManagement.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<!-- Navigation Bar -->
+<nav class="main-nav">
+    <div class="nav-container">
+        <!-- Brand on the left -->
+        <div class="nav-brand">
+            <i class="ri-plane-line"></i>
+            <span>Tours & Travels Management</span>
+        </div>
+        
+        <!-- Navigation links on the right -->
+        <div class="nav-links">
+            <a asp-controller="Home" asp-action="Index" class="nav-link">
+                Home
+            </a>
+            <a asp-controller="Home" asp-action="Privacy" class="nav-link">
+                Privacy
+            </a>
+            <a asp-controller="Account" asp-action="Login" class="nav-link active">
+                Login
+            </a>
+            <a asp-controller="Account" asp-action="Register" class="nav-link">
+                Register
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Theme Toggle Button -->
+<div class="theme-toggle" id="themeToggle">
+    <i class="ri-palette-line"></i>
+</div>
+
+<div class="main-container">
+    <div class="form-container" id="authContainer">
+        <div class="form-wrapper" id="formWrapper">
+            <h2 id="formTitle">
+                <i class="ri-login-box-line me-2"></i>Welcome Back
+            </h2>
+            <p class="form-subtitle">Login to continue your journey</p>
+            
+            <!-- Login Form -->
+            <form id="loginForm" 
+                  asp-action="Login" 
+                  asp-route-returnurl="@ViewData["ReturnUrl"]" 
+                  method="post"
+                  novalidate>
+                
+                @Html.AntiForgeryToken()
+                
+                <!-- Validation Summary - Removed "hidden" class -->
+                <div asp-validation-summary="All" class="validation-summary"></div>
+                
+                <!-- Email Input - Removed hardcoded value -->
+                <div class="input-group">
+                    <input asp-for="Email" 
+                           type="email" 
+                           class="form-control" 
+                           placeholder=" "
+                           required />
+                    <label asp-for="Email">
+                        <i class="ri-mail-line me-1"></i>Email address
+                    </label>
+                    <span asp-validation-for="Email" class="validation-error"></span>
+                </div>
+                
+                <!-- Password Input -->
+                <div class="input-group">
+                    <input asp-for="Password" 
+                           type="password" 
+                           class="form-control" 
+                           placeholder=" "
+                           required />
+                    <label asp-for="Password">
+                        <i class="ri-lock-password-line me-1"></i>Password
+                    </label>
+                    <span asp-validation-for="Password" class="validation-error"></span>
+                </div>
+                
+                <!-- Remember Me Toggle -->
+                <div class="toggle-group">
+                    <label class="switch">
+                        <input asp-for="RememberMe" type="checkbox" id="rememberMe" />
+                        <span class="slider"></span>
+                    </label>
+                    <span>Remember me</span>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" id="loginSubmitBtn" class="submit-btn">
+                    <i class="ri-login-circle-line me-1"></i> Login
+                </button>
+                
+                <!-- Form Toggle Link -->
+                <p class="switch-text">
+                    Don't have an account?
+                    <a asp-action="Register" 
+                       asp-route-returnurl="@ViewData["ReturnUrl"]"
+                       class="form-toggle-link"
+                       id="registerLink">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="main-footer">
+    <p class="footer-text">
+        © @DateTime.Now.Year Tours & Travels Management
+    </p>
+</footer>
+
+<style>
+    /* ===== CSS Variables for Themes ===== */
+    :root {
+        --bg: #e0e5ec;
+        --container-bg: #e0e5ec;
+        --input-bg: #ecf0f3;
+        --shadow-dark: #a3b1c6;
+        --shadow-light: #ffffff;
+        --accent: #6c63ff;
+        --accent-light: #8f94fb;
+        --text: #333;
+        --text-light: #666;
+        --nav-bg: #ffffff;
+        --nav-shadow: rgba(0, 0, 0, 0.1);
+        --success: #4caf50;
+        --error: #f44336;
+        --card-radius: 30px;
+        --input-radius: 15px;
+        --nav-height: 80px;
+    }
+
+    body.pink-theme {
+        --bg: #f5e9ec;
+        --container-bg: #f5e9ec;
+        --input-bg: #fdf6f9;
+        --shadow-dark: #d4b9c3;
+        --shadow-light: #fff;
+        --accent: #e38cad;
+        --accent-light: #f5a3c7;
+        --text: #444;
+        --text-light: #666;
+        --nav-bg: #fff5f8;
+    }
+
+    /* ===== Reset & Base Styles ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        transition: background 0.4s ease;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ===== Navigation Bar ===== */
+    .main-nav {
+        background: var(--nav-bg);
+        box-shadow: 0 4px 20px var(--nav-shadow);
+        height: var(--nav-height);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 60px;
+    }
+
+    /* Brand on the left */
+    .nav-brand {
+        display: flex;
+        align-items: center;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--accent);
+        white-space: nowrap;
+    }
+
+    .nav-brand i {
+        margin-right: 12px;
+        font-size: 2rem;
+    }
+
+    /* Navigation links on the right */
+    .nav-links {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 10px 0;
+        position: relative;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .nav-link:hover {
+        color: var(--accent);
+    }
+
+    .nav-link.active {
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    .nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 2px;
+    }
+
+    /* ===== Theme Toggle ===== */
+    .theme-toggle {
+        position: fixed;
+        top: 100px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: var(--container-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 8px 8px 20px var(--shadow-dark),
+                    -8px -8px 20px var(--shadow-light);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 999;
+        font-size: 1.8rem;
+        color: var(--accent);
+    }
+
+    .theme-toggle:hover {
+        transform: rotate(15deg) scale(1.15);
+        box-shadow: 12px 12px 30px var(--shadow-dark),
+                    -12px -12px 30px var(--shadow-light);
+    }
+
+    /* ===== Main Container ===== */
+    .main-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: var(--nav-height);
+        padding: calc(var(--nav-height) + 50px) 20px 50px;
+        width: 100%;
+    }
+
+    /* ===== Form Container ===== */
+    .form-container {
+        width: 100%;
+        max-width: 700px;
+        animation: fadeSlideIn 0.6s ease;
+    }
+
+    .form-wrapper {
+        width: 100%;
+        padding: 60px;
+        border-radius: var(--card-radius);
+        background: var(--container-bg);
+        box-shadow: 25px 25px 75px var(--shadow-dark),
+                    -25px -25px 75px var(--shadow-light);
+        transition: all 0.6s ease;
+    }
+
+    @@keyframes fadeSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* ===== Form Header ===== */
+    .form-wrapper h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 2.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-subtitle {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: 50px;
+        font-size: 1.3rem;
+        opacity: 0.8;
+    }
+
+    /* ===== Input Groups ===== */
+    .input-group {
+        position: relative;
+        margin-bottom: 40px;
+        border-radius: var(--input-radius);
+        background: var(--input-bg);
+        box-shadow: inset 10px 10px 20px var(--shadow-dark),
+                    inset -10px -10px 20px var(--shadow-light);
+        padding: 25px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .input-group:hover {
+        box-shadow: 0 0 0 3px var(--accent),
+                    inset 10px 10px 20px var(--shadow-dark),
+                    inset -10px -10px 20px var(--shadow-light);
+    }
+
+    .input-group input {
+        width: 100%;
+        border: none;
+        background: none;
+        outline: none;
+        font-size: 1.2rem;
+        color: var(--text);
+        padding-top: 10px;
+        font-weight: 500;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 25px;
+        left: 30px;
+        font-size: 1.1rem;
+        color: var(--text-light);
+        transition: 0.3s ease;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .input-group label i {
+        margin-right: 12px;
+        color: var(--accent);
+        font-size: 1.3rem;
+    }
+
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: 12px;
+        font-size: 1rem;
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    /* ===== Toggle Switch ===== */
+    .toggle-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+        color: var(--text);
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 65px;
+        height: 36px;
+        margin-right: 15px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        border-radius: 34px;
+        transition: 0.4s;
+        box-shadow: inset 4px 4px 10px var(--shadow-dark);
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 28px;
+        width: 28px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.4s;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    }
+
+    input:checked + .slider {
+        background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(29px);
+    }
+
+    /* ===== Submit Button ===== */
+    .submit-btn {
+        width: 100%;
+        padding: 22px;
+        border: none;
+        border-radius: var(--input-radius);
+        background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        color: white;
+        font-weight: 600;
+        font-size: 1.3rem;
+        box-shadow: 10px 10px 25px var(--shadow-dark),
+                    -10px -10px 25px var(--shadow-light);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 35px;
+        letter-spacing: 0.5px;
+    }
+
+    .submit-btn:hover {
+        background: linear-gradient(135deg, var(--accent-light), var(--accent));
+        transform: translateY(-3px);
+        box-shadow: 15px 15px 35px var(--shadow-dark),
+                    -15px -15px 35px var(--shadow-light);
+    }
+
+    .submit-btn:active {
+        transform: translateY(0);
+    }
+
+    /* ===== Switch Text ===== */
+    .switch-text {
+        text-align: center;
+        font-size: 1.2rem;
+        color: var(--text-light);
+        margin: 0;
+        padding-top: 25px;
+        border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .form-toggle-link {
+        color: var(--accent);
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .form-toggle-link:hover {
+        text-decoration: underline;
+        color: var(--accent-light);
+    }
+
+    /* ===== Validation ===== */
+    .validation-summary {
+        background-color: rgba(244, 67, 54, 0.1);
+        border: 1px solid var(--error);
+        color: var(--error);
+        padding: 25px;
+        border-radius: var(--input-radius);
+        margin-bottom: 35px;
+        font-size: 1.1rem;
+        display: none; /* Hidden by default, shown by JS if needed */
+    }
+
+    .validation-summary.show {
+        display: block;
+    }
+
+    .validation-error {
+        color: var(--error);
+        font-size: 1rem;
+        margin-top: 10px;
+        display: block;
+        font-weight: 500;
+    }
+
+    /* ===== Footer ===== */
+    .main-footer {
+        background: var(--nav-bg);
+        padding: 30px 0;
+        text-align: center;
+        margin-top: auto;
+        box-shadow: 0 -4px 20px var(--nav-shadow);
+    }
+
+    .footer-text {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        opacity: 0.8;
+        font-weight: 500;
+    }
+
+    /* ===== Responsive Design ===== */
+    @@media (max-width: 1200px) {
+        .nav-container {
+            padding: 0 40px;
+        }
+        
+        .form-wrapper {
+            padding: 50px;
+            max-width: 650px;
+        }
+    }
+
+    @@media (max-width: 992px) {
+        .nav-container {
+            padding: 0 30px;
+        }
+        
+        .nav-links {
+            gap: 30px;
+        }
+        
+        .form-wrapper {
+            padding: 45px;
+            max-width: 600px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2.5rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            height: auto;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .nav-brand {
+            font-size: 1.4rem;
+        }
+        
+        .nav-links {
+            gap: 25px;
+        }
+        
+        .nav-link {
+            font-size: 1rem;
+        }
+        
+        .form-wrapper {
+            padding: 40px 35px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2.3rem;
+        }
+        
+        .theme-toggle {
+            top: 140px;
+            width: 55px;
+            height: 55px;
+            font-size: 1.6rem;
+        }
+        
+        .main-container {
+            padding-top: 160px;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .nav-links {
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .form-wrapper {
+            padding: 35px 30px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 2rem;
+        }
+        
+        .input-group {
+            padding: 20px 25px;
+        }
+        
+        .input-group input {
+            font-size: 1.1rem;
+        }
+        
+        .submit-btn {
+            padding: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .theme-toggle {
+            top: 120px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .nav-container {
+            padding: 15px;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+        }
+        
+        .nav-brand i {
+            font-size: 1.5rem;
+        }
+        
+        .nav-links {
+            gap: 15px;
+        }
+        
+        .nav-link {
+            font-size: 0.95rem;
+        }
+        
+        .form-wrapper {
+            padding: 30px 25px;
+        }
+        
+        .form-wrapper h2 {
+            font-size: 1.8rem;
+        }
+        
+        .input-group {
+            padding: 18px 20px;
+        }
+        
+        .submit-btn {
+            padding: 18px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // DOM Elements
+        const themeToggle = document.querySelector("#themeToggle");
+        const authContainer = document.querySelector("#authContainer");
+        const loginForm = document.querySelector("#loginForm");
+        const validationSummary = document.querySelector(".validation-summary");
+
+        // Check if there are validation errors on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show validation summary if it has content
+            if (validationSummary && validationSummary.textContent.trim() !== '') {
+                validationSummary.classList.add('show');
+            }
+            
+            // Set active navigation link based on current page
+            const currentPath = window.location.pathname.toLowerCase();
+            document.querySelectorAll('.nav-link').forEach(link => {
+                const linkPath = link.getAttribute('href').toLowerCase();
+                if (currentPath.includes(linkPath) || 
+                    (currentPath.includes('login') && linkPath.includes('login'))) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('pink-theme');
+            
+            // Store theme preference
+            const isPink = document.body.classList.contains('pink-theme');
+            localStorage.setItem('theme', isPink ? 'pink' : 'default');
+            
+            // Add animation to container
+            authContainer.style.animation = 'none';
+            setTimeout(() => {
+                authContainer.style.animation = 'fadeSlideIn 0.6s ease';
+            }, 10);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'pink') {
+            document.body.classList.add('pink-theme');
+        }
+
+        // Form submission handling - ONLY validation, no prevention of actual submission
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                // Only prevent if form is invalid
+                if (!this.checkValidity()) {
+                    e.preventDefault();
+                    // Show validation summary
+                    if (validationSummary) {
+                        validationSummary.classList.add('show');
+                    }
+                    return false;
+                }
+                // If form is valid, let it submit normally
+            });
+        }
+
+        // Input focus effects
+        document.querySelectorAll('.input-group input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.boxShadow = '0 0 0 3px var(--accent), inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.boxShadow = 'inset 10px 10px 20px var(--shadow-dark), inset -10px -10px 20px var(--shadow-light)';
+            });
+            
+            // Trigger label animation if there's a value
+            if (input.value) {
+                const label = input.nextElementSibling;
+                if (label && label.tagName === 'LABEL') {
+                    label.style.top = '12px';
+                    label.style.fontSize = '1rem';
+                    label.style.color = 'var(--accent)';
+                    label.style.fontWeight = '600';
+                }
+            }
+        });
+        
+        // Navigation active state on click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+    
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

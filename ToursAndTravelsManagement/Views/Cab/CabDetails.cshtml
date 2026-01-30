@@ -1,0 +1,473 @@
+﻿@model ToursAndTravelsManagement.Models.CabRoutePrice
+@{
+    ViewData["Title"] = "Cab Details";
+    Layout = "~/Views/Shared/_AnotherLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h2 class="mb-1">@Model.Cab.Name</h2>
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-primary me-2">@Model.Cab.SeatingCapacity Seater</span>
+                                @if (Model.Cab.HasAC)
+                                {
+                                    <span class="badge bg-success me-2">Air Conditioned</span>
+                                }
+                                <span class="badge bg-info">@Model.Cab.Type</span>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <h3 class="text-success mb-0">₹@Model.Price</h3>
+                            <small class="text-muted">Total fare inclusive of taxes</small>
+                        </div>
+                    </div>
+
+                    <!-- Route Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-2">Route</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center me-3">
+                                            <div class="bg-primary rounded-circle p-2 text-white mb-1">
+                                                <i class="ri-map-pin-line"></i>
+                                            </div>
+                                            <small>From</small>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">@Model.Route.FromCity.Name</h5>
+                                        </div>
+                                    </div>
+                                    <div class="text-center my-1">
+                                        <i class="ri-arrow-down-line text-muted"></i>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="text-center me-3">
+                                            <div class="bg-success rounded-circle p-2 text-white mb-1">
+                                                <i class="ri-map-pin-line"></i>
+                                            </div>
+                                            <small>To</small>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">@Model.Route.ToCity.Name</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h6 class="text-muted mb-3">Journey Type</h6>
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-warning rounded-circle p-2 text-white me-3">
+                                            <i class="ri-road-map-line"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="mb-0">@Model.JourneyType</h5>
+                                            <p class="text-muted mb-0">One Way Trip</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cab Specifications -->
+                    <h5 class="mb-3">Cab Specifications</h5>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-user-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Seating Capacity</h6>
+                                            <p class="text-muted mb-0">@Model.Cab.SeatingCapacity passengers</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-car-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Model</h6>
+                                            <p class="text-muted mb-0">@Model.Cab.Model</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-calendar-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Year</h6>
+                                            <p class="text-muted mb-0">@Model.Cab.Year</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-snowflake-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Air Conditioning</h6>
+                                            <p class="text-muted mb-0">@(Model.Cab.HasAC ? "Available" : "Not Available")</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-file-text-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Registration</h6>
+                                            <p class="text-muted mb-0">@Model.Cab.RegistrationNumber</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle p-2 me-3">
+                                            <i class="ri-price-tag-3-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Base Price per KM</h6>
+                                            <p class="text-muted mb-0">₹@Model.Cab.BasePricePerKM</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Features from JSON (if available) -->
+                    @if (!string.IsNullOrEmpty(Model.Cab.Features))
+                    {
+                        <h5 class="mb-3">Amenities & Features</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="card border-0 bg-light">
+                                    <div class="card-body">
+                                        @try
+                                        {
+                                            var features = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Model.Cab.Features);
+                                            if (features != null && features.Any())
+                                            {
+                                                <div class="row">
+                                                    @for (int i = 0; i < features.Count; i++)
+                                                    {
+                                                        <div class="col-md-6">
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                                <span>@features[i]</span>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <!-- Default features if JSON is empty or invalid -->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>GPS Navigation</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>Music System</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>Comfortable Seats</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>Experienced Driver</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>First Aid Kit</span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                            <span>24/7 Support</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            <!-- If JSON parsing fails, show default features -->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>GPS Navigation</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>Music System</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>Comfortable Seats</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>Experienced Driver</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>First Aid Kit</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                                        <span>24/7 Support</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Default features if Features property is empty -->
+                        <h5 class="mb-3">Amenities & Features</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>GPS Navigation</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>Music System</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>Comfortable Seats</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>Experienced Driver</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>First Aid Kit</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="ri-checkbox-circle-fill text-success me-2"></i>
+                                    <span>24/7 Support</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Included/Excluded Services -->
+                    @if (!string.IsNullOrEmpty(Model.IncludedServices) || !string.IsNullOrEmpty(Model.ExcludedServices))
+                    {
+                        <h5 class="mb-3">Service Details</h5>
+                        <div class="row mb-4">
+                            @if (!string.IsNullOrEmpty(Model.IncludedServices))
+                            {
+                                <div class="col-md-6">
+                                    <div class="card border-success border-2">
+                                        <div class="card-header bg-success bg-opacity-10 border-0">
+                                            <h6 class="mb-0 text-success">
+                                                <i class="ri-check-double-line me-2"></i>Included Services
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            @try
+                                            {
+                                                var included = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Model.IncludedServices);
+                                                if (included != null)
+                                                {
+                                                    <ul class="mb-0">
+                                                        @foreach (var item in included)
+                                                        {
+                                                            <li>@item</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                <p class="mb-0">@Model.IncludedServices</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.ExcludedServices))
+                            {
+                                <div class="col-md-6">
+                                    <div class="card border-danger border-2">
+                                        <div class="card-header bg-danger bg-opacity-10 border-0">
+                                            <h6 class="mb-0 text-danger">
+                                                <i class="ri-close-line me-2"></i>Excluded Services
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            @try
+                                            {
+                                                var excluded = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Model.ExcludedServices);
+                                                if (excluded != null)
+                                                {
+                                                    <ul class="mb-0">
+                                                        @foreach (var item in excluded)
+                                                        {
+                                                            <li>@item</li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                <p class="mb-0">@Model.ExcludedServices</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 d-md-flex mt-4">
+                        <a asp-action="Book" asp-controller="Cab" asp-route-id="@Model.CabRoutePriceId"
+                           class="btn btn-primary btn-lg px-5 py-3 flex-grow-1">
+                            <i class="ri-calendar-check-line me-2"></i>Book This Cab
+                        </a>
+                        <a asp-action="SearchResults" asp-controller="Cab"
+                           class="btn btn-outline-secondary btn-lg px-4">
+                            <i class="ri-arrow-left-line me-2"></i>Back to Results
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar with Similar Cabs -->
+        <div class="col-lg-4">
+            <!-- Price Summary Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Fare Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Base Fare</span>
+                        <span>₹@Model.Price</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Taxes & Charges</span>
+                        <span>₹0</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Toll Charges</span>
+                        <span>Included</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Parking Charges</span>
+                        <span>Included</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total Amount</span>
+                        <span class="text-success">₹@Model.Price</span>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <h6><i class="ri-information-line me-2"></i>Important Notes</h6>
+                        <ul class="mb-0 small">
+                            <li>Driver details shared 2 hours before pickup</li>
+                            <li>Free cancellation up to 24 hours</li>
+                            <li>Extra luggage may incur charges</li>
+                            <li>Waiting charges apply after 15 minutes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Similar Cabs Section -->
+            @if (ViewBag.SimilarCabs != null && ((List<ToursAndTravelsManagement.Models.CabRoutePrice>)ViewBag.SimilarCabs).Any())
+            {
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <i class="ri-car-line me-2"></i>Similar Cabs
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var cab in ViewBag.SimilarCabs)
+                        {
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <h6 class="mb-1">@cab.Cab.Name</h6>
+                                            <p class="small text-muted mb-2">
+                                                <i class="ri-user-line me-1"></i>@cab.Cab.SeatingCapacity Seater
+                                                @if (cab.Cab.HasAC)
+                                                {
+                                                    <span class="badge bg-success ms-2">A/C</span>
+                                                }
+                                            </p>
+                                        </div>
+                                        <h5 class="text-success mb-0">₹@cab.Price</h5>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <a asp-action="CabDetails" asp-controller="Cab"
+                                           asp-route-id="@cab.CabRoutePriceId"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="ri-eye-line me-1"></i>View
+                                        </a>
+                                        <a asp-action="Book" asp-controller="Cab"
+                                           asp-route-id="@cab.CabRoutePriceId"
+                                           class="btn btn-sm btn-primary">
+                                            <i class="ri-calendar-check-line me-1"></i>Book
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

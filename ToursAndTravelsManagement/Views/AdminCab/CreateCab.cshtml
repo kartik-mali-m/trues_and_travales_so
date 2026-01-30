@@ -1,0 +1,139 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.Models.Cab
+@{
+    ViewData["Title"] = "Add New Cab";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="ri-add-line me-2"></i> Add New Cab
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreateCab" method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label">Cab Name *</label>
+                                <input asp-for="Name" class="form-control" required>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Type" class="form-label">Cab Type *</label>
+                                <select asp-for="Type" class="form-select" required>
+                                    <option value="">Select Type</option>
+                                    @foreach (var type in Enum.GetValues(typeof(ToursAndTravelsManagement.Enums.CabType)))
+                                    {
+                                        <option value="@((int)type)">@type.ToString()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Model" class="form-label">Model *</label>
+                                <input asp-for="Model" class="form-control" required>
+                                <span asp-validation-for="Model" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="RegistrationNumber" class="form-label">Registration Number *</label>
+                                <input asp-for="RegistrationNumber" class="form-control" required>
+                                <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Year" class="form-label">Year *</label>
+                                <input asp-for="Year" type="number" min="2000" max="@(DateTime.Now.Year + 1)"
+                                       class="form-control" required>
+                                <span asp-validation-for="Year" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="SeatingCapacity" class="form-label">Seating Capacity *</label>
+                                <select asp-for="SeatingCapacity" class="form-select" required>
+                                    <option value="">Select Capacity</option>
+                                    <option value="4">4 Seater</option>
+                                    <option value="5">5 Seater</option>
+                                    <option value="6">6 Seater</option>
+                                    <option value="7">7 Seater</option>
+                                    <option value="8">8 Seater</option>
+                                    <option value="12">12 Seater</option>
+                                </select>
+                                <span asp-validation-for="SeatingCapacity" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BasePricePerKM" class="form-label">Base Price per KM (₹) *</label>
+                                <input asp-for="BasePricePerKM" type="number" step="0.01" min="0"
+                                       class="form-control" required>
+                                <span asp-validation-for="BasePricePerKM" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check mt-4">
+                                    <input asp-for="HasAC" class="form-check-input" type="checkbox">
+                                    <label asp-for="HasAC" class="form-check-label">Air Conditioned</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Status" class="form-label">Status *</label>
+                                <select asp-for="Status" class="form-select" required>
+                                    @foreach (var status in Enum.GetValues(typeof(ToursAndTravelsManagement.Enums.CabStatus)))
+                                    {
+                                        <option value="@((int)status)">@status.ToString()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DriverName" class="form-label">Driver Name</label>
+                                <input asp-for="DriverName" class="form-control">
+                                <span asp-validation-for="DriverName" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DriverPhone" class="form-label">Driver Phone</label>
+                                <input asp-for="DriverPhone" class="form-control">
+                                <span asp-validation-for="DriverPhone" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="Features" class="form-label">Features (JSON array)</label>
+                                <textarea asp-for="Features" class="form-control" rows="3"
+                                          placeholder='["Music System", "Airbags", "GPS"]'></textarea>
+                                <small class="text-muted">Enter features as JSON array</small>
+                                <span asp-validation-for="Features" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                                <input asp-for="ImageUrl" class="form-control" type="url">
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="@Url.Action("ManageCabs", "AdminCab")" class="btn btn-secondary">
+                                <i class="ri-arrow-left-line me-2"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ri-save-line me-2"></i> Save Cab
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

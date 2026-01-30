@@ -1,0 +1,46 @@
+﻿@using System.Security.Claims
+@model ToursAndTravelsManagement.Models.Booking
+@{
+    ViewData["Title"] = "Book Tour";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <form asp-action="BookTour" method="post">
+        <div class="row mb-3">
+            <input type="hidden" asp-for="UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
+            <div class="col-md-6">
+                <label asp-for="NumberOfParticipants" class="form-label"></label>
+                <input asp-for="NumberOfParticipants" class="form-control" />
+                <span asp-validation-for="NumberOfParticipants" class="text-danger"></span>
+            </div>
+
+            <!-- Payment Method Dropdown -->
+            <div class="form-group">
+                <label asp-for="PaymentMethod"></label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    <option value="">-- Select Payment Method --</option>
+                    <option value="CreditCard">Credit Card</option>
+                    <option value="DebitCard">Debit Card</option>
+                    <option value="PayPal">PayPal</option>
+                </select>
+                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+            </div>
+
+        <input type="hidden" asp-for="TourId" value="@ViewBag.Tour.TourId" />
+        <input type="hidden" asp-for="CreatedDate" value="@DateTime.Now" />
+        <input type="hidden" asp-for="Status" value="Confirmed" />
+        <input type="hidden" asp-for="PaymentStatus" value="Pending" />
+        <input type="hidden" asp-for="IsActive" value="true" />
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+            <a href="@Url.Action("AvailableTours", "UserBookings")" class="btn btn-secondary">Back to Tours</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+}

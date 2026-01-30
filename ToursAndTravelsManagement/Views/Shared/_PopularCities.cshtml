@@ -1,0 +1,26 @@
+﻿@* 
+@model ToursAndTravelsManagement.Shared._PopularCitiesModel
+@{
+}
+ *@
+
+ @model List<ToursAndTravelsManagement.Models.City>
+<div class="row g-3">
+    @foreach (var city in Model)
+    {
+        <div class="col-md-3">
+            <a href="javascript:void(0)" class="text-decoration-none quick-search-btn"
+               data-from="@city.Name" data-to="Mumbai" data-journey="OneWay">
+                <div class="city-card p-3 rounded border">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                        <div>
+                            <h6 class="mb-1">@city.Name</h6>
+                            <small class="text-muted">@city.State</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>

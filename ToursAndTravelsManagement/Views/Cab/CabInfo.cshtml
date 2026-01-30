@@ -1,0 +1,52 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+    @model ToursAndTravelsManagement.Models.Cab
+
+@{
+    ViewData["Title"] = "Cab Details";
+    Layout = "~/Views/Shared/_AnotherLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>@Model.Name</h2>
+            <p><strong>Type:</strong> @Model.Type</p>
+            <p><strong>Model:</strong> @Model.Model</p>
+            <p><strong>Seating Capacity:</strong> @Model.SeatingCapacity</p>
+            <p><strong>AC:</strong> @(Model.HasAC ? "Yes" : "No")</p>
+            <p><strong>Base Price per KM:</strong> ₹@Model.BasePricePerKM</p>
+            <p><strong>Registration Number:</strong> @Model.RegistrationNumber</p>
+            <p><strong>Year:</strong> @Model.Year</p>
+        </div>
+        <div class="col-md-6">
+            <h4>Search for a Route</h4>
+            <form asp-controller="Cab" asp-action="SearchResults" method="post">
+                <input type="hidden" name="cabId" value="@ViewBag.CabId" />
+                <div class="mb-3">
+                    <label for="FromCity" class="form-label">From City</label>
+                    <input type="text" class="form-control" id="FromCity" name="FromCity" required>
+                </div>
+                <div class="mb-3">
+                    <label for="ToCity" class="form-label">To City</label>
+                    <input type="text" class="form-control" id="ToCity" name="ToCity" required>
+                </div>
+                <div class="mb-3">
+                    <label for="TravelDate" class="form-label">Travel Date</label>
+                    <input type="date" class="form-control" id="TravelDate" name="TravelDate" required>
+                </div>
+                <div class="mb-3">
+                    <label for="JourneyType" class="form-label">Journey Type</label>
+                    <select class="form-control" id="JourneyType" name="JourneyType" required>
+                        <option value="0">One Way</option>
+                        <option value="1">Round Trip</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+</div>

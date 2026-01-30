@@ -1,0 +1,238 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ToursAndTravelsManagement.Models.CabBooking
+@{
+    ViewData["Title"] = "Booking Confirmation";
+    Layout = "~/Views/Shared/_AnotherLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Success Alert -->
+            <div class="alert alert-success border-0 shadow-sm">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                        <i class="ri-checkbox-circle-fill display-4"></i>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4 class="alert-heading mb-2">Booking Confirmed!</h4>
+                        <p class="mb-0">Your cab booking has been successfully confirmed. Booking ID: <strong>@Model.BookingNumber</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Details Card -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="ri-ticket-line me-2"></i>Booking Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6>Booking Information</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Booking ID:</strong></td>
+                                    <td>@Model.BookingNumber</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Booking Date:</strong></td>
+                                    <td>@Model.CreatedDate.ToString("dd MMM yyyy hh:mm tt")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Status:</strong></td>
+                                    <td>
+                                        <span class="badge bg-success">@Model.Status.ToString()</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Status:</strong></td>
+                                    <td>
+                                        <span class="badge bg-@(Model.PaymentStatus == ToursAndTravelsManagement.Enums.PaymentStatus.Completed ? "success" : "warning")">
+                                            @Model.PaymentStatus.ToString()
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <h6>Travel Information</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Route:</strong></td>
+                                    <td>
+                                        @Model.CabRoutePrice.Route.FromCity.Name →
+                                        @Model.CabRoutePrice.Route.ToCity.Name
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Travel Date:</strong></td>
+                                    <td>@Model.TravelDate.ToString("dd MMM yyyy")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pickup Time:</strong></td>
+                                    <td>@Model.PickupTime.ToString(@"hh\:mm")</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Passengers:</strong></td>
+                                    <td>@Model.NumberOfPassengers</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6>Cab Details</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Cab Model:</strong></td>
+                                    <td>@Model.CabRoutePrice.Cab.Name</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Capacity:</strong></td>
+                                    <td>@Model.CabRoutePrice.Cab.SeatingCapacity Seater</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AC:</strong></td>
+                                    <td>@(Model.CabRoutePrice.Cab.HasAC ? "Yes" : "No")</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <h6>Payment Details</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td><strong>Base Fare:</strong></td>
+                                    <td>₹@Model.BasePrice</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Extra Charges:</strong></td>
+                                    <td>₹@Model.ExtraCharges</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discount:</strong></td>
+                                    <td>₹@Model.Discount</td>
+                                </tr>
+                                <tr class="table-primary">
+                                    <td><strong>Total Amount:</strong></td>
+                                    <td><strong>₹@Model.TotalPrice</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment Method:</strong></td>
+                                    <td>@Model.PaymentMethod.ToString()</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Details -->
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="ri-map-pin-line me-2"></i>Location Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Pickup Location</h6>
+                            <p class="mb-2">
+                                <i class="ri-map-pin-fill text-danger me-2"></i>
+                                @Model.PickupLocation
+                            </p>
+                            <small class="text-muted">
+                                <i class="ri-time-line me-1"></i>
+                                Please arrive 15 minutes before @Model.PickupTime.ToString(@"hh\:mm")
+                            </small>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Dropoff Location</h6>
+                            <p class="mb-2">
+                                <i class="ri-map-pin-fill text-success me-2"></i>
+                                @Model.DropoffLocation
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="ri-information-line me-2"></i>Next Steps</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 rounded-circle bg-primary bg-opacity-10 d-inline-block mb-2">
+                                <i class="ri-phone-fill text-primary fs-4"></i>
+                            </div>
+                            <h6>Driver Contact</h6>
+                            <small class="text-muted">Will be shared 2 hours before pickup</small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 rounded-circle bg-success bg-opacity-10 d-inline-block mb-2">
+                                <i class="ri-file-text-fill text-success fs-4"></i>
+                            </div>
+                            <h6>Download Invoice</h6>
+                            <small class="text-muted">Available in your bookings</small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 rounded-circle bg-warning bg-opacity-10 d-inline-block mb-2">
+                                <i class="ri-chat-smile-fill text-warning fs-4"></i>
+                            </div>
+                            <h6>24/7 Support</h6>
+                            <small class="text-muted">Call +91-1234567890</small>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="p-3 rounded-circle bg-info bg-opacity-10 d-inline-block mb-2">
+                                <i class="ri-share-fill text-info fs-4"></i>
+                            </div>
+                            <h6>Share Booking</h6>
+                            <small class="text-muted">Share with co-travelers</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                <a href="@Url.Action("MyBookings", "Cab")" class="btn btn-primary">
+                    <i class="ri-history-line me-2"></i>View All Bookings
+                </a>
+                <a href="@Url.Action("Search", "Cab")" class="btn btn-outline-primary ms-2">
+                    <i class="ri-taxi-line me-2"></i>Book Another Cab
+                </a>
+                <button class="btn btn-outline-success ms-2" onclick="window.print()">
+                    <i class="ri-printer-line me-2"></i>Print Ticket
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Print Styles -->
+<style>
+    @@media print {
+        .navbar, .footer, .btn {
+            display: none !important;
+        }
+
+        .container {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .card {
+            border: 1px solid #000 !important;
+            box-shadow: none !important;
+        }
+    }
+</style>

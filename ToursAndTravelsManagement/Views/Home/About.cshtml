@@ -1,0 +1,1080 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] | Tours & Travels Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .about-header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%2342b883" opacity="0.1"/></svg>');
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .about-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #42b883, #2c3e50, #ff7e5f);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .header-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, #42b883, #ff7e5f);
+            border-radius: 2px;
+        }
+
+        .header-subtitle {
+            font-size: 1.4rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .header-tagline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #42b883;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: rgba(66, 184, 131, 0.1);
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content Styles */
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(66, 184, 131, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .about-card.visible {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .about-card:nth-child(1).visible { animation-delay: 0.1s; }
+        .about-card:nth-child(2).visible { animation-delay: 0.2s; }
+        .about-card:nth-child(3).visible { animation-delay: 0.3s; }
+        .about-card:nth-child(4).visible { animation-delay: 0.4s; }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #42b883, #ff7e5f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #42b883;
+            border-radius: 2px;
+        }
+
+        .card-content {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        /* Our Story Section */
+        .story-section {
+            background: white;
+            border-radius: 15px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .story-section.visible {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #42b883, #ff7e5f);
+            border-radius: 2px;
+        }
+
+        .story-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 40px;
+        }
+
+        /* Values Section */
+        .values-section {
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            border-radius: 15px;
+            padding: 60px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .values-section.visible {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .value-item.visible {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .value-item:nth-child(1).visible { animation-delay: 0.1s; }
+        .value-item:nth-child(2).visible { animation-delay: 0.2s; }
+        .value-item:nth-child(3).visible { animation-delay: 0.3s; }
+        .value-item:nth-child(4).visible { animation-delay: 0.4s; }
+
+        .value-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            color: #42b883;
+            margin-bottom: 20px;
+        }
+
+        .value-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Services Section */
+        .services-section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .services-section.visible {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .service-item {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .service-item.visible {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .service-item:nth-child(1).visible { animation-delay: 0.1s; }
+        .service-item:nth-child(2).visible { animation-delay: 0.2s; }
+        .service-item:nth-child(3).visible { animation-delay: 0.3s; }
+        .service-item:nth-child(4).visible { animation-delay: 0.4s; }
+        .service-item:nth-child(5).visible { animation-delay: 0.5s; }
+        .service-item:nth-child(6).visible { animation-delay: 0.6s; }
+
+        .service-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: #42b883;
+            margin-bottom: 20px;
+        }
+
+        .service-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        /* Car Animation */
+        .car-animation {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .car {
+            position: absolute;
+            font-size: 3.5rem;
+            color: #42b883;
+            top: 20px;
+            left: -100px;
+        }
+
+        .road {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #666;
+            border-radius: 2px;
+        }
+
+        .road::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 20px,
+                white 20px,
+                white 40px
+            );
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #42b883, #2c3e50);
+            color: white;
+            border-radius: 15px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .contact-section.visible {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .contact-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .contact-text {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .quick-links.visible {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .links-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .nav-link {
+            color: #42b883;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #42b883;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #42b883;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(66, 184, 131, 0.3);
+        }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        @@keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @@keyframes drive {
+            0% {
+                left: -100px;
+                transform: rotateY(0deg);
+            }
+            49% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                left: 100%;
+                transform: rotateY(180deg);
+            }
+            99% {
+                transform: rotateY(180deg);
+            }
+            100% {
+                left: -100px;
+                transform: rotateY(0deg);
+            }
+        }
+
+        @@keyframes roadMove {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-40px);
+            }
+        }
+
+        @@keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @@media (max-width: 768px) {
+            .about-header {
+                padding: 50px 20px;
+            }
+
+            .header-title {
+                font-size: 2.8rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .stat-item {
+                min-width: 120px;
+            }
+
+            .stat-number {
+                font-size: 2.2rem;
+            }
+
+            .story-section, .values-section, .contact-section {
+                padding: 40px 20px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-item {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .car {
+                font-size: 2.8rem;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .header-title {
+                font-size: 2.2rem;
+            }
+
+            .about-card {
+                padding: 25px 20px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .links-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="about-header">
+            <h1 class="header-title">
+                <i class="fas fa-compass"></i> About Us
+            </h1>
+            <p class="header-subtitle">
+                Your trusted partner for premium cab services. Experience comfort, safety, and reliability with our professional transportation solutions.
+            </p>
+            <div class="header-tagline">
+                <i class="fas fa-star"></i> Making Travel Comfortable Since 2010 <i class="fas fa-star"></i>
+            </div>
+
+            <!-- Dynamic Stats from Controller -->
+            <div class="hero-stats">
+                <div class="stat-item" data-count="@ViewData["TotalCabs"]" id="statCabs">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Premium Cabs</div>
+                </div>
+                <div class="stat-item" data-count="@ViewData["TotalCities"]" id="statCities">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Cities Covered</div>
+                </div>
+                <div class="stat-item" data-count="@ViewData["TotalBookings"]" id="statBookings">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Total Bookings</div>
+                </div>
+                <div class="stat-item" data-count="@ViewData["SatisfiedCustomers"]" id="statCustomers">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Happy Customers</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Car Animation -->
+        <div class="car-animation">
+            <div class="car">
+                <i class="fas fa-car-side"></i>
+            </div>
+            <div class="road"></div>
+        </div>
+
+        <!-- About Content Cards -->
+        <div class="about-content">
+            <div class="about-card">
+                <div class="card-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h2 class="card-title">Our Mission</h2>
+                <div class="card-content">
+                    <p>To provide exceptional transportation experiences that are safe, reliable, and comfortable. We strive to make every journey seamless through our professional drivers and modern fleet.</p>
+                    <p style="margin-top: 15px;">We believe that travel should be accessible, enjoyable, and stress-free for everyone.</p>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="card-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h2 class="card-title">Our Vision</h2>
+                <div class="card-content">
+                    <p>To become the most trusted transportation partner across India, recognized for our commitment to safety, customer satisfaction, and technological innovation in cab services.</p>
+                    <p style="margin-top: 15px;">We envision a network that connects cities seamlessly with premium transportation solutions.</p>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="card-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="card-title">Our Promise</h2>
+                <div class="card-content">
+                    <p>We promise to deliver:</p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>24/7 customer support</li>
+                        <li>Best price guarantee</li>
+                        <li>On-time pickup</li>
+                        <li>Professional drivers</li>
+                        <li>Safety-first approach</li>
+                        <li>Clean & maintained vehicles</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="about-card">
+                <div class="card-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2 class="card-title">Safety Commitment</h2>
+                <div class="card-content">
+                    <p>Your safety is our top priority with comprehensive measures:</p>
+                    <ul style="padding-left: 20px; margin-top: 10px;">
+                        <li>Regular vehicle maintenance</li>
+                        <li>GPS tracking on all trips</li>
+                        <li>Verified & trained drivers</li>
+                        <li>24/7 emergency support</li>
+                        <li>COVID-19 safety protocols</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Story Section -->
+        <section class="story-section">
+            <h2 class="section-title">Our Journey</h2>
+            <div class="story-content">
+                <p>Founded in 2010 in Pune, Maharashtra, Tours & Travels Management began as a small transportation service with a big vision: to revolutionize cab services with reliability and comfort.</p>
+                <p style="margin-top: 20px;">Starting with just 5 vehicles, we've grown into a premier transportation company with <strong>@ViewData["TotalCabs"]+ premium cabs</strong> serving customers across <strong>@ViewData["TotalCities"]+ cities</strong> in India.</p>
+                <p style="margin-top: 20px;">With over <strong>@ViewData["TotalBookings"]+ successful bookings</strong> and counting, our commitment to excellence has earned us the trust of <strong>@ViewData["SatisfiedCustomers"]+ satisfied customers</strong>.</p>
+            </div>
+        </section>
+
+        <!-- Our Values Section -->
+        <section class="values-section">
+            <h2 class="section-title" style="color: white;">Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="value-title">Safety First</h3>
+                    <p>Your safety is our utmost priority in every journey</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="value-title">Punctuality</h3>
+                    <p>We value your time with on-time arrivals and departures</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Customer Focus</h3>
+                    <p>Your satisfaction drives everything we do</p>
+                </div>
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="value-title">Eco-Friendly</h3>
+                    <p>Committed to reducing our environmental footprint</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <h2 class="section-title">Our Cab Services</h2>
+            <div class="services-grid">
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3 class="service-title">City Rides</h3>
+                    <p>Comfortable rides within city limits with fixed fares</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <h3 class="service-title">Outstation Trips</h3>
+                    <p>Long-distance travel with experienced drivers</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3 class="service-title">Airport Transfers</h3>
+                    <p>Timely pickups and drops for flights</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="service-title">Corporate Travel</h3>
+                    <p>Dedicated services for business professionals</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="service-title">Hourly Packages</h3>
+                    <p>Flexible hourly rentals for multiple stops</p>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="service-title">Premium Services</h3>
+                    <p>Luxury vehicles for special occasions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h2 class="contact-title">Need a Reliable Cab?</h2>
+            <p class="contact-text">
+                Our professional drivers are ready to provide you with safe and comfortable transportation. Book your ride today!
+            </p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-phone contact-icon"></i>
+                    <span>+91 7028493468</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope contact-icon"></i>
+                    <span>info@toursandtravels.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt contact-icon"></i>
+                    <span>Pune, Maharashtra</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock contact-icon"></i>
+                    <span>24/7 Service Available</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Links -->
+        <div class="quick-links">
+            <p style="margin-bottom: 15px; font-weight: 500;">Quick Navigation:</p>
+            <div class="links-container">
+                <a asp-controller="Home" asp-action="Index" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a asp-controller="Home" asp-action="About" class="nav-link">
+                    <i class="fas fa-info-circle"></i> About Us
+                </a>
+                <a asp-controller="Cab" asp-action="Index" class="nav-link">
+                    <i class="fas fa-car"></i> Book Cab
+                </a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">
+                    <i class="fas fa-envelope"></i> Contact
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            initializeAnimations();
+            
+            // Start counter animations for stats
+            startCounters();
+            
+            // Start car animation
+            startCarAnimation();
+            
+            // Add hover effects
+            initializeHoverEffects();
+            
+            // Make stats interactive
+            makeStatsInteractive();
+        });
+
+        function initializeAnimations() {
+            // Initialize Intersection Observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Start icon animations for visible cards
+                        if (entry.target.classList.contains('about-card')) {
+                            const icon = entry.target.querySelector('.card-icon');
+                            if (icon) {
+                                icon.style.animation = 'bounce 2s infinite';
+                            }
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Observe all elements that need animations
+            document.querySelectorAll('.about-card, .value-item, .service-item, .story-section, .values-section, .services-section, .contact-section, .quick-links').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        function startCounters() {
+            // Counter animation for statistics
+            const statItems = document.querySelectorAll('.stat-item');
+            
+            statItems.forEach(item => {
+                const target = parseInt(item.getAttribute('data-count'));
+                const counterElement = item.querySelector('.stat-number');
+                let current = 0;
+                
+                // Add countUp animation class
+                counterElement.style.animation = 'countUp 2s ease-out forwards';
+                
+                // Animate counting
+                const increment = Math.ceil(target / 100);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counterElement.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        counterElement.textContent = current.toLocaleString();
+                    }
+                }, 20);
+            });
+        }
+
+        function startCarAnimation() {
+            const car = document.querySelector('.car');
+            const road = document.querySelector('.road');
+            
+            // Set initial animation
+            car.style.animation = 'drive 10s linear infinite';
+            road.style.animation = 'roadMove 1s linear infinite';
+            
+            // Speed up animation on scroll
+            document.addEventListener('scroll', function() {
+                const scrollY = window.scrollY;
+                const speed = Math.max(8, 20 - scrollY / 100);
+                car.style.animationDuration = speed + 's';
+            });
+        }
+
+        function initializeHoverEffects() {
+            // Card hover effects
+            document.querySelectorAll('.about-card, .service-item, .value-item').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';
+                    
+                    // Add icon bounce on hover
+                    const icon = this.querySelector('.card-icon, .value-icon, .service-icon');
+                    if (icon) {
+                        icon.style.animation = 'bounce 0.5s ease';
+                        setTimeout(() => {
+                            icon.style.animation = 'bounce 2s infinite';
+                        }, 500);
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.08)';
+                });
+            });
+            
+            // Contact items hover
+            document.querySelectorAll('.contact-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.05)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        }
+
+        function makeStatsInteractive() {
+            // Add click effect to stats
+            document.querySelectorAll('.stat-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const label = this.querySelector('.stat-label').textContent;
+                    const value = this.querySelector('.stat-number').textContent;
+                    
+                    // Create a popup effect
+                    const popup = document.createElement('div');
+                    popup.className = 'stat-popup';
+                    popup.innerHTML = `<strong>${value}</strong> ${label}`;
+                    popup.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: rgba(66, 184, 131, 0.9);
+                        color: white;
+                        padding: 20px 40px;
+                        border-radius: 10px;
+                        font-size: 1.2rem;
+                        z-index: 1000;
+                        animation: fadeIn 0.3s ease-out;
+                    `;
+                    
+                    document.body.appendChild(popup);
+                    
+                    setTimeout(() => {
+                        popup.style.animation = 'fadeIn 0.3s ease-out reverse';
+                        setTimeout(() => popup.remove(), 300);
+                    }, 1500);
+                });
+            });
+        }
+
+        // Add style for popup
+        const style = document.createElement('style');
+        style.textContent = `
+            .stat-popup {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+            }
+            @@keyframes fadeIn {
+                from { opacity: 0; transform: translate(-50%, -60%); }
+                to { opacity: 1; transform: translate(-50%, -50%); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
